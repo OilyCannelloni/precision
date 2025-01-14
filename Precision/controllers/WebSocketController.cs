@@ -1,11 +1,18 @@
 ﻿using EmbedIO.WebSockets;
+using Precision.algorithm;
+using Precision.deals;
+using Precision.game;
 using Precision.models;
+using Precision.websocket;
 using Swan.Formatters;
 
 namespace Precision.controllers;
 
 public class WebSocketController : WebSocketModule
 {
+    private readonly WebSocketService _webSocketService = 
+        new(new DealService(new DealGenerator()), new GameService());
+    
     public WebSocketController(string urlPath, bool enableConnectionWatchdog)
         : base(urlPath, enableConnectionWatchdog)
     {
@@ -16,16 +23,28 @@ public class WebSocketController : WebSocketModule
     {
         var text = Encoding.GetString(buffer);
         var evt = Json.Deserialize<WebSocketEvent>(text);
-        
+        var serverEvt = _webSocketService.HandleEvent(evt);
+        await SendEvent(context, serverEvt);
     }
 
     protected override async Task OnClientConnectedAsync(IWebSocketContext context)
     {
-        
+        Console.WriteLine("Client connected");
+        await SendEvent(context, new WebSocketEvent
+        {
+            Type = WebSocketEventType.ConnectionSuccessful,
+            Data = ""
+        });
     }
 
     protected override Task OnClientDisconnectedAsync(IWebSocketContext context)
     {
-        return base.OnClientDisconnectedAsync(context);
+        Console.WriteLine("Client disconnected");
+        return Task.CompletedTask;
+    }
+
+    private async Task SendEvent(IWebSocketContext ctx, WebSocketEvent evt)
+    {
+        await SendAsync(ctx, Json.Serialize(evt));
     }
 }

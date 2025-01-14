@@ -13,8 +13,8 @@ using var server = new WebServer(s => s
     .WithMode(HttpListenerMode.EmbedIO)
 );
 
-server.WithWebApi("/api/", x => x.WithController<DefaultController>());
-server.WithModule(new WebSocketController("/ws/", true));
+server.WithWebApi("/api", x => x.WithController<DefaultController>());
+server.WithModule(new WebSocketController("/ws", true));
 server.WithStaticFolder("/", @"C:\Users\barte\RiderProjects\Precision\Precision\htmlroot", true);
 server.StateChanged += (s, e) => $"WebServer New State - {e.NewState}".Info();
 

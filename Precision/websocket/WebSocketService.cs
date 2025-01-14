@@ -1,17 +1,19 @@
 ﻿using Precision.deals;
+using Precision.game;
 using Precision.models;
+using Precision.models.dto;
 using Swan.Formatters;
 
 namespace Precision.websocket;
 
-public class WebSocketService(DealService _dealService)
+public class WebSocketService(DealService dealService, GameService gameService)
 {
     public WebSocketEvent HandleEvent(WebSocketEvent @event)
     {
         return @event.Type switch
         {
             WebSocketEventType.CardClicked => HandleCardClicked(@event),
-            WebSocketEventType.RandomDealRequest => HandleRandomDealRequest(@event),
+            WebSocketEventType.NewGameRequest => HandleNewGameRequest(@event),
             _ => throw new ArgumentOutOfRangeException($"Invalid event type: {@event.Type}")
         };
     }
@@ -21,14 +23,16 @@ public class WebSocketService(DealService _dealService)
         throw new NotImplementedException();
     }
 
-    public WebSocketEvent HandleRandomDealRequest(WebSocketEvent @event)
+    public WebSocketEvent HandleNewGameRequest(WebSocketEvent @event)
     {
-        var deal = _dealService.GetRandomDeal();
+        var deal = dealService.GetRandomDeal();
+        var dealBox = new DealBox(2, deal);
+        var gameId = gameService.CreateGame(dealBox);
 
         return new WebSocketEvent
         {
-            Type = WebSocketEventType.DealData,
-            Data = Json.Serialize(deal)
+            Type = WebSocketEventType.NewGameCreated,
+            Data = Json.Serialize(new NewGameDto {GameId = gameId, Box = dealBox})
         };
     }
 }

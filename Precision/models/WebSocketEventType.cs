@@ -2,7 +2,9 @@
 
 public enum WebSocketEventType
 {
+    ConnectionSuccessful,
     CardClicked,
-    RandomDealRequest,
+    NewGameRequest,
+    NewGameCreated,
     DealData
 }
