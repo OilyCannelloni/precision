@@ -1,0 +1,82 @@
+﻿.dealMiddleWrapper {
+    align-items: center;
+    justify-content: left;
+    display: flex;
+}
+
+.dealMiddle {
+    margin: 10px;
+    padding: 10%;
+    display: grid;
+    grid-template-columns: 1fr 50px 1fr;
+    grid-template-rows: 1fr 75px 1fr;
+    column-gap: 20px;
+    row-gap: 10px;
+}
+
+.dealMiddleCard {
+    width: 50px;
+    height: 75px;
+}
+
+.dealMiddleCardNorth {
+    @extend .dealMiddleCard;
+    grid-column: 2;
+    grid-row: 1;
+    justify-self: center;
+}
+
+.dealMiddleCardWest {
+    @extend .dealMiddleCard;
+    grid-column: 1;
+    grid-row: 2;
+    justify-self: right;
+}
+
+.dealMiddleCardEast {
+    @extend .dealMiddleCard;
+    grid-column: 3;
+    grid-row: 2;
+    justify-self: left;
+}
+
+.dealMiddleCardSouth {
+    @extend .dealMiddleCard;
+    grid-column: 2;
+    grid-row: 3;
+    justify-self: center;
+}
+
+.deal {
+    
+}
+
+.hand {
+    display: flex;
+    flex-direction: column;
+    margin: 30px;
+}
+
+.holding {
+    padding: 5px;
+    margin-top: 3px;
+    display: inline-flex;
+}
+
+.card {
+    padding: 5px;
+    border: solid dimgray 2px;
+    border-radius: 5px;
+    width: 50px;
+    height: 75px;
+    background-color: cornsilk;
+    color: black;
+    vertical-align: center;
+}
+
+
+
+.cardText {
+    text-align: center;
+    font-size: 20px;
+}

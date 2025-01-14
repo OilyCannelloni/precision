@@ -1,5 +1,5 @@
 ﻿import Holding from "./holding"
-import game_elements from "./game_elements.module.css"
+import game_elements from "./game_elements.module.scss"
 
 export class HandModel {
     Spades: string = "";
