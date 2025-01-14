@@ -1,7 +1,6 @@
 ﻿import game_elements from "./game_elements.module.scss"
 import {Hand, HandModel} from "./hand"
 import {Card, CardModel, CardPlaceholder} from "./card"
-
 import {Container, Row, Col} from "reactstrap"
 
 export class DealModel {
@@ -68,7 +67,8 @@ export function Deal(deal: DealModel, dm: DealMiddleModel = new DealMiddleModel(
             <Row>
                 <Col xl></Col>
                 <Col xl>{Hand(deal.South)}</Col>
-                <Col xl></Col>
+                <Col xl>
+                </Col>
             </Row>
         </Container>
     </div>

@@ -2,6 +2,6 @@
 
 public class NewGameDto
 {
-    public string GameId;
-    public DealBox Box;
+    public string GameId { get; set; }
+    public DealBox Box { get; set; }
 }

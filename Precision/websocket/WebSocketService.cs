@@ -28,11 +28,14 @@ public class WebSocketService(DealService dealService, GameService gameService)
         var deal = dealService.GetRandomDeal();
         var dealBox = new DealBox(2, deal);
         var gameId = gameService.CreateGame(dealBox);
-
+        var str = Json.Serialize(new NewGameDto { GameId = gameId, Box = dealBox });
+        
+        Console.WriteLine(str);
+        
         return new WebSocketEvent
         {
             Type = WebSocketEventType.NewGameCreated,
-            Data = Json.Serialize(new NewGameDto {GameId = gameId, Box = dealBox})
+            Data = str
         };
     }
 }

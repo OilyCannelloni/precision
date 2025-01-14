@@ -45,6 +45,8 @@ public class WebSocketController : WebSocketModule
 
     private async Task SendEvent(IWebSocketContext ctx, WebSocketEvent evt)
     {
-        await SendAsync(ctx, Json.Serialize(evt));
+        var str = Json.Serialize(evt);
+        Console.WriteLine(str);
+        await SendAsync(ctx, str);
     }
 }
