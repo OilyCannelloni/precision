@@ -22,6 +22,7 @@ public class WebSocketController : WebSocketModule
     protected override async Task OnMessageReceivedAsync(IWebSocketContext context, byte[] buffer, IWebSocketReceiveResult result)
     {
         var text = Encoding.GetString(buffer);
+        Console.WriteLine($"RX: {text}");
         var evt = Json.Deserialize<WebSocketEvent>(text);
         var serverEvt = _webSocketService.HandleEvent(evt);
         await SendEvent(context, serverEvt);
@@ -46,7 +47,7 @@ public class WebSocketController : WebSocketModule
     private async Task SendEvent(IWebSocketContext ctx, WebSocketEvent evt)
     {
         var str = Json.Serialize(evt);
-        Console.WriteLine(str);
+        Console.WriteLine($"TX: {str}");
         await SendAsync(ctx, str);
     }
 }

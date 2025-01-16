@@ -9,7 +9,6 @@ public class GameService
     public string CreateGame(DealBox box)
     {
         var id = Guid.NewGuid().ToString();
-        Console.WriteLine($"New game: {id}");
         _games[id] = new Game(box);
         return id;
     }

@@ -3,6 +3,7 @@
 import {Deal, DealModel, DealMiddleModel} from "@/components/deal"
 import {CardModel} from "@/components/card"
 import {Connect} from "@/WebSocket/websocket"
+import {useState} from "react"
 
 
 export default function Page() {
@@ -12,10 +13,12 @@ export default function Page() {
         North: new CardModel("Kd"),
     });
     
+    const [dealData, setDealData] = useState(dealModel);
+    
     return <div>
         <div>
-            {Deal(dealModel, dealMiddleModel)}
+            {Deal(dealData, dealMiddleModel)}
         </div>
-        <Connect url={"http://localhost:9696/ws"}/>
+        <Connect url={"http://localhost:9696/ws"} setDealData={setDealData}/>
     </div>;
 }

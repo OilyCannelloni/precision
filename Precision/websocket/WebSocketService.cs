@@ -1,8 +1,8 @@
-﻿using Precision.deals;
+﻿using System.Text.Json;
+using Precision.deals;
 using Precision.game;
 using Precision.models;
 using Precision.models.dto;
-using Swan.Formatters;
 
 namespace Precision.websocket;
 
@@ -26,11 +26,12 @@ public class WebSocketService(DealService dealService, GameService gameService)
     public WebSocketEvent HandleNewGameRequest(WebSocketEvent @event)
     {
         var deal = dealService.GetRandomDeal();
+        Console.WriteLine(deal);
         var dealBox = new DealBox(2, deal);
-        var gameId = gameService.CreateGame(dealBox);
-        var str = Json.Serialize(new NewGameDto { GameId = gameId, Box = dealBox });
         
-        Console.WriteLine(str);
+        Console.WriteLine(dealBox.Deal);
+        var gameId = gameService.CreateGame(dealBox);
+        var str = JsonSerializer.Serialize(new NewGameDto { GameId = gameId, Box = dealBox });
         
         return new WebSocketEvent
         {

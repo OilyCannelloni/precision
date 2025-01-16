@@ -2,8 +2,9 @@
 import {Hand, HandModel} from "./hand"
 import {Card, CardModel, CardPlaceholder} from "./card"
 import {Container, Row, Col} from "reactstrap"
+import {IDeal} from "@/models/deal"
 
-export class DealModel {
+export class DealModel implements IDeal {
     West: HandModel = new HandModel();
     North: HandModel = new HandModel();
     East: HandModel = new HandModel();
