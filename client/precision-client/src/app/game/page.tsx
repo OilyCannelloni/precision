@@ -17,7 +17,7 @@ export default function Page() {
     
     return <div>
         <div>
-            {Deal(dealData, dealMiddleModel)}
+            <Deal deal={dealData} dm={dealMiddleModel} />
         </div>
         <Connect url={"http://localhost:9696/ws"} setDealData={setDealData}/>
     </div>;

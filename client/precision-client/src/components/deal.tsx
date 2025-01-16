@@ -50,7 +50,10 @@ function DealMiddle(dm: DealMiddleModel) {
     </div>
 }
 
-export function Deal(deal: DealModel, dm: DealMiddleModel = new DealMiddleModel()) {
+export function Deal(
+    {deal, dm = new DealMiddleModel()} 
+    : {deal: DealModel, dm: DealMiddleModel}
+) {
     return <div className={game_elements.deal}>
         <Container>
             <Row>

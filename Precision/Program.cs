@@ -15,6 +15,7 @@ using var server = new WebServer(s => s
 
 server.WithWebApi("/api", x => x.WithController<DefaultController>());
 server.WithModule(new WebSocketController("/ws", true));
+server.WithCors();
 server.WithStaticFolder("/", @"C:\Users\barte\RiderProjects\Precision\Precision\htmlroot", true);
 server.StateChanged += (s, e) => $"WebServer New State - {e.NewState}".Info();
 

@@ -3,5 +3,5 @@
 public class NewGameDto
 {
     public string GameId { get; set; }
-    public DealBox Box { get; set; }
+    public DealBox DealBox { get; set; }
 }
