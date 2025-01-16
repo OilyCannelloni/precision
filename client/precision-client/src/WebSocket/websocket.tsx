@@ -25,12 +25,10 @@ export function Connect({url, setDealData} : {url: string, setDealData: (deal: D
         if (lastMessage == null) return;
         console.log("RX: " + lastMessage)
         const event = JSON.parse(lastMessage.data) as SocketEvent;
-        console.log(event)
         
         if (event.Type == 3) {
             const newGameDTO = JSON.parse(event.Data) as INewGameDTO
             const deal = newGameDTO.DealBox.Deal
-            console.log(deal)
             setDealData(deal)
         }
         

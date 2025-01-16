@@ -79,6 +79,9 @@
     vertical-align: center;
 }
 
+.cardPlaceHolder {
+    @extend .dealMiddleCard
+}
 
 
 .cardText {

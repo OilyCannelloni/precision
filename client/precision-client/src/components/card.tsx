@@ -12,7 +12,7 @@ export class CardModel {
 }
 
 export function CardPlaceholder() {
-    return <div className={game_elements.card} style={{"display": "none"}}>
+    return <div className={game_elements.cardPlaceHolder}>
     </div>
 }
 
