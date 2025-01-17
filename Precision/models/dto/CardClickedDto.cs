@@ -2,6 +2,6 @@
 
 public class CardClickedDto
 {
-    public string GameId = string.Empty;
-    public string Card = string.Empty;
+    public string GameId { get; set; } = string.Empty;
+    public string Card { get; set; } = string.Empty;
 }

@@ -1,4 +1,6 @@
-﻿import game_elements from "./game_elements.module.scss"
+﻿"use client"
+
+import game_elements from "./game_elements.module.scss"
 import {Card, CardSuit} from "@/models/deal"
 
 
@@ -23,7 +25,12 @@ export function CardComponent(card: Card) {
         [CardSuit.Clubs]: "♣"
     }[card.Suit] ?? "";
     
-    return <div className={game_elements.card} key={card.cardStr()}>
+    function cardClicked() {
+        const event = new CustomEvent('cardClicked', {detail: card})
+        window.dispatchEvent(event)
+    }
+    
+    return <div className={game_elements.card} key={card.cardStr()} onClick={cardClicked}>
         <div className={`${game_elements.cardText} ${color_class}`}>
             {card.Value}
         </div>

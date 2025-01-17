@@ -1,12 +1,18 @@
 ﻿"use client"
 
 import {useState, createContext, ReactNode, Dispatch, SetStateAction} from "react"
-import {CardSuit, Position, DealMiddle} from "@/models/deal"
+import {CardSuit, Position, DealMiddle, Card} from "@/models/deal"
 
 
-interface HookWrapper<T> {
+class HookWrapper<T> {
     Value: T
     SetValue: Dispatch<SetStateAction<T>>
+    
+    constructor() {
+        const [val, set] = useState(Object() as T)
+        this.Value = val
+        this.SetValue = set
+    }
 }
 
 interface HandHooks {
@@ -22,9 +28,16 @@ interface DealHooks {
     [Position.East]: HandHooks
     [Position.South]: HandHooks
     DealMiddle: HookWrapper<DealMiddle>
+    CardClicked: HookWrapper<Card>
+}
+
+
+interface GlobalVariables {
+    GameId: string
 }
 
 export const HookContext = createContext({} as DealHooks)
+export const GlobalVarContext = createContext({} as GlobalVariables)
 
 export function HookProvider({ children } : {children: ReactNode}) {
      const hooks = (() => {
@@ -58,13 +71,19 @@ export function HookProvider({ children } : {children: ReactNode}) {
             [Position.North]: handHooks(),
             [Position.East]: handHooks(),
             [Position.South]: handHooks(),
-            DealMiddle: middleHook()
+            DealMiddle: middleHook(),
+            CardClicked: new HookWrapper<Card>()
         }
     })()
 
     
+    const globals: GlobalVariables = {
+        GameId: ""
+    }
     
-    return <HookContext.Provider value={hooks}>
-        {children}
-    </HookContext.Provider>
+    return <GlobalVarContext.Provider value={globals}>
+        <HookContext.Provider value={hooks}>
+            {children}
+        </HookContext.Provider>
+    </GlobalVarContext.Provider> 
 }

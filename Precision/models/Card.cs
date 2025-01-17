@@ -1,5 +1,9 @@
-﻿namespace Precision.models;
+﻿using System.Text.Json.Serialization;
+using Precision.algorithm.json;
 
+namespace Precision.models;
+
+[JsonConverter(typeof(CardJsonConverter))]
 public class Card
 {
     public const string Values = "23456789TJQKA";
@@ -9,9 +13,8 @@ public class Card
 
     public Card(string str)
     {
-        str = str.ToLower();
-        Suit = SuitExtensions.FromChar(str[1]);
-        Value = Values.IndexOf(str[0]);
+        Suit = SuitExtensions.FromChar(char.ToLower(str[1]));
+        Value = Values.IndexOf(char.ToUpper(str[0]));
     }
 
     public char Char()

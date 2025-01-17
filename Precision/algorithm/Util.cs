@@ -25,5 +25,9 @@ public static class Util
 
         return bestI;
     }
-    
+
+    public static string PopChar(this string s, char c)
+    {
+        return string.Concat(s.Split(c));
+    }
 }

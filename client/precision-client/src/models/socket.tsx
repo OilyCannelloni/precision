@@ -1,11 +1,11 @@
-﻿import {IDealBox, Position} from "./deal"
+﻿import {Card, IDealBox, Position, Trick} from "./deal"
 
 export enum SocketEventType {
     ConnectionSuccessful,
     CardClicked,
     NewGameRequest,
     NewGameCreated,
-    DealUpdate,
+    PlayCardApproved,
     Error
 }
 
@@ -24,8 +24,9 @@ export interface ICardClickedDTO {
     Card: string
 }
 
-export interface IDealUpdateDTO {
+export interface IPlayCardApprovedDTO {
     ChangedPosition: Position,
-    ChangedCard: string,
-    CurrentDealMiddle: string[]
+    PlayedCard: string,
+    CurrentTrick: Trick,
+    ActionPlayer: Position
 }

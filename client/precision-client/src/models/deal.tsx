@@ -21,6 +21,17 @@ export enum CardSuit {
     Spades = "Spades",
 }
 
+export namespace CardSuitHelper {
+    export function fromString(s: string) {
+        return {
+            "c": CardSuit.Clubs,
+            "d": CardSuit.Diamonds,
+            "h": CardSuit.Hearts,
+            "s": CardSuit.Spades,
+        }[s] ?? CardSuit.Clubs
+    }
+}
+
 export namespace Suit {
     export function fromString(s: string) {
         return {
@@ -37,7 +48,7 @@ export namespace Suit {
 export class Card {
     Value: string = "";
     Suit: CardSuit;
-    cardStr = () => this.Value + this.Suit;
+    cardStr = () => this.Value + this.Suit[0].toLowerCase();
 
     public constructor(value: string, suit: CardSuit) {
         this.Value = value
@@ -81,13 +92,13 @@ export class Deal {
     }
 }
 
-export class DealMiddle {
+export class Trick {
     [Position.West]: Card | null = null;
     [Position.North]: Card | null = null;
     [Position.East]: Card | null = null;
     [Position.South]: Card | null = null;
 
-    public constructor(init?: Partial<DealMiddle>) {
+    public constructor(init?: Partial<Trick>) {
         Object.assign(this, init);
     }
 }

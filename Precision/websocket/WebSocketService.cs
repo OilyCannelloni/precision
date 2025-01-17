@@ -23,7 +23,7 @@ public class WebSocketService(DealService dealService, GameService gameService)
     {
         CardClickedDto ccDto = JsonSerializer.Deserialize<CardClickedDto>(@event.Data) 
                                ?? throw new SerializationException("Invalid payload for CardClicked event");
-
+        
         var game = gameService.GetGame(ccDto.GameId);
         var dealUpdate = game.PlayCard(new Card(ccDto.Card));
         if (dealUpdate == null)
@@ -37,7 +37,7 @@ public class WebSocketService(DealService dealService, GameService gameService)
 
         return new WebSocketEvent
         {
-            Type = WebSocketEventType.DealUpdate,
+            Type = WebSocketEventType.PlayCardApproved,
             Data = JsonSerializer.Serialize(dealUpdate)
         };
     }

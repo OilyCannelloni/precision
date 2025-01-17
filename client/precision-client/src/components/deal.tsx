@@ -4,14 +4,14 @@ import {CardComponent, CardPlaceholder} from "./card"
 import {Container, Row, Col} from "reactstrap"
 import {useContext} from "react"
 import {HookContext} from "@/common/hooks"
-import {DealMiddle, Position} from "@/models/deal"
+import {Trick, Position} from "@/models/deal"
 
 
-function DealMiddleComponent({dm} : {dm: DealMiddle}) {
-    const north = dm[Position.North] ? CardComponent(dm[Position.North]) : CardPlaceholder();
-    const west = dm[Position.West] ? CardComponent(dm[Position.West]) : CardPlaceholder();
-    const east = dm[Position.East] ? CardComponent(dm[Position.East]) : CardPlaceholder();
-    const south = dm[Position.South] ? CardComponent(dm[Position.South]) : CardPlaceholder();
+function DealMiddleComponent({trick} : {trick: Trick}) {
+    const north = trick[Position.North] ? CardComponent(trick[Position.North]) : CardPlaceholder();
+    const west = trick[Position.West] ? CardComponent(trick[Position.West]) : CardPlaceholder();
+    const east = trick[Position.East] ? CardComponent(trick[Position.East]) : CardPlaceholder();
+    const south = trick[Position.South] ? CardComponent(trick[Position.South]) : CardPlaceholder();
     
     return <div className={game_elements.dealMiddle}>
         <div className={game_elements.dealMiddleCardNorth}>{north}</div>
@@ -34,7 +34,7 @@ export function DealComponent() {
             <Row>
                 <Col xl>{HandComponent(Position.West)}</Col>
                 <Col xl className={game_elements.dealMiddleWrapper}>
-                    <DealMiddleComponent dm={hooks.DealMiddle.Value}></DealMiddleComponent>
+                    <DealMiddleComponent trick={hooks.DealMiddle.Value}></DealMiddleComponent>
                 </Col>
                 <Col xl>{HandComponent(Position.East)}</Col>
             </Row>

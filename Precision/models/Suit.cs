@@ -1,10 +1,20 @@
 ﻿using System.Diagnostics.CodeAnalysis;
+using System.Text.Json.Serialization;
 
 namespace Precision.models;
 
 public enum Suit
 {
-    Pass, Clubs, Diamonds, Hearts, Spades, NT
+    Pass,
+    [JsonStringEnumMemberName("Clubs")]
+    Clubs,
+    [JsonStringEnumMemberName("Diamonds")]
+    Diamonds,
+    [JsonStringEnumMemberName("Hearts")]
+    Hearts,
+    [JsonStringEnumMemberName("Spades")]
+    Spades,
+    NT
 }
 
 public static class SuitExtensions

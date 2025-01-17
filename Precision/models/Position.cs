@@ -1,8 +1,18 @@
-﻿namespace Precision.models;
+﻿using System.Text.Json.Serialization;
 
+namespace Precision.models;
+
+[JsonConverter(typeof(JsonStringEnumConverter))]
 public enum Position
 {
-    West, North, East, South
+    [JsonStringEnumMemberName("West")]
+    West,
+    [JsonStringEnumMemberName("North")]
+    North,
+    [JsonStringEnumMemberName("East")]
+    East,
+    [JsonStringEnumMemberName("South")]
+    South
 }
 
 
@@ -63,5 +73,15 @@ public static class PositionExtensions
             3 => pos.Previous(),
             _ => throw new ArgumentOutOfRangeException(nameof(times), times, null)
         };
+    }
+
+    public static IEnumerable<Position> OneCycle(this Position pos)
+    {
+        var i = 4;
+        while (i-- > 0)
+        {
+            yield return pos;
+            pos = pos.Next();
+        }
     }
 }
