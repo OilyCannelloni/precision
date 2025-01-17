@@ -1,4 +1,5 @@
-﻿using System.Text.Json;
+﻿using System.Runtime.Serialization;
+using System.Text.Json;
 using Precision.deals;
 using Precision.game;
 using Precision.models;
@@ -18,12 +19,30 @@ public class WebSocketService(DealService dealService, GameService gameService)
         };
     }
 
-    public WebSocketEvent HandleCardClicked(WebSocketEvent @event)
+    private WebSocketEvent HandleCardClicked(WebSocketEvent @event)
     {
-        throw new NotImplementedException();
+        CardClickedDto ccDto = JsonSerializer.Deserialize<CardClickedDto>(@event.Data) 
+                               ?? throw new SerializationException("Invalid payload for CardClicked event");
+
+        var game = gameService.GetGame(ccDto.GameId);
+        var dealUpdate = game.PlayCard(new Card(ccDto.Card));
+        if (dealUpdate == null)
+        {
+            return new WebSocketEvent
+            {
+                Type = WebSocketEventType.Error,
+                Data = $"Card {ccDto.Card} cannot be played."
+            };
+        }
+
+        return new WebSocketEvent
+        {
+            Type = WebSocketEventType.DealUpdate,
+            Data = JsonSerializer.Serialize(dealUpdate)
+        };
     }
 
-    public WebSocketEvent HandleNewGameRequest(WebSocketEvent @event)
+    private WebSocketEvent HandleNewGameRequest(WebSocketEvent @event)
     {
         var deal = dealService.GetRandomDeal();
         var dealBox = new DealBox(2, deal);

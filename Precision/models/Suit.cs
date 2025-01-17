@@ -2,55 +2,52 @@
 
 namespace Precision.models;
 
-public struct Suit : IComparable<Suit>, IEquatable<Suit>
+public enum Suit
 {
-    private int InternalValue { get; set; }
+    Pass, Clubs, Diamonds, Hearts, Spades, NT
+}
 
-    public static readonly int Pass = -1;
-    public static readonly int Clubs = 0;
-    public static readonly int Diamonds = 1;
-    public static readonly int Hearts = 2;
-    public static readonly int Spades = 3;
-    public static readonly int NT = 4;
-
-    public override bool Equals([NotNullWhen(true)] object? obj)
+public static class SuitExtensions
+{
+    public static bool IsGreaterThan(this Suit @this, Suit other)
     {
-        var other = (Suit?)obj;
-        return other?.InternalValue.Equals(this.InternalValue) ?? false;
+        if (@this == other)
+            return false;
+        foreach (var suit in Enum.GetValues<Suit>())
+        {
+            if (suit == @this)
+                return true;
+            if (suit == other)
+                return false;
+        }
+        throw new ArgumentException($"Invalid comparison: {@this} > {other}");
     }
 
-    public override int GetHashCode()
+    public static Suit FromChar(char c)
     {
-        return InternalValue.GetHashCode();
+        return char.ToLower(c) switch
+        {
+            'c' => Suit.Clubs,
+            'd' => Suit.Diamonds,
+            'h' => Suit.Hearts,
+            's' => Suit.Spades,
+            'n' => Suit.NT,
+            'p' => Suit.Pass,
+            _ => throw new ArgumentException($"Invalid suit char: {c}")
+        };
     }
 
-    public static bool operator <(Suit left, Suit right)
+    public static char ToChar(this Suit suit)
     {
-        return left.InternalValue < right.InternalValue;
-    }
-
-    public static bool operator >(Suit left, Suit right)
-    {
-        return left.InternalValue > right.InternalValue;
-    }
-
-    public static bool operator ==(Suit left, Suit right)
-    {
-        return left.Equals(right);
-    }
-
-    public static bool operator !=(Suit left, Suit right)
-    {
-        return !(left == right);
-    }
-
-    public int CompareTo(Suit other)
-    {
-        return InternalValue.CompareTo(other.InternalValue);
-    }
-
-    public bool Equals(Suit other)
-    {
-        return InternalValue == other.InternalValue;
+        return suit switch
+        {
+            Suit.Pass => 'p',
+            Suit.Clubs => 'c',
+            Suit.Diamonds => 'd',
+            Suit.Hearts => 'h',
+            Suit.Spades => 's',
+            Suit.NT => 'n',
+            _ => throw new ArgumentOutOfRangeException(nameof(suit), suit, null)
+        };
     }
 }

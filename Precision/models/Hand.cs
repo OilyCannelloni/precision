@@ -16,6 +16,42 @@ public class Hand
         yield return Diamonds;
         yield return Clubs;
     }
+
+    public string this[Suit suit]
+    {
+        get => suit switch
+        {
+            Suit.Pass or Suit.NT => throw new ArgumentException($"Cannot reference Hand by Suit {suit}"),
+            Suit.Clubs => Clubs,
+            Suit.Diamonds => Diamonds,
+            Suit.Hearts => Hearts,
+            Suit.Spades => Spades,
+            _ => throw new ArgumentOutOfRangeException(nameof(suit), suit, null)
+        };
+        
+        set {
+            switch (suit)
+            {
+                case Suit.Pass or Suit.NT:
+                    throw new ArgumentException($"Cannot reference Hand by Suit {suit}");
+                case Suit.Clubs:
+                    Clubs = value;
+                    break;
+                case Suit.Diamonds:
+                    Diamonds = value;
+                    break;
+                case Suit.Hearts:
+                    Hearts = value;
+                    break;
+                case Suit.Spades:
+                    Spades = value;
+                    break;
+                default:
+                    throw new ArgumentOutOfRangeException(nameof(suit), suit, null);
+            }
+        }
+    }
+    
     
     public override string ToString()
     {
@@ -43,5 +79,10 @@ public class Hand
             Diamonds = string.Join("", store[2].OrderBy(c => -c.CardValue())),
             Clubs = string.Join("", store[3].OrderBy(c => -c.CardValue()))
         };
+    }
+
+    public bool ContainsCard(Card card)
+    {
+        return this[card.Suit].Contains(card.Char());
     }
 }

@@ -43,5 +43,10 @@ public class Deal
             }
         }
     }
+
+    public void RemoveCard(Position pos, Card card)
+    {
+        this[pos][card.Suit] = this[pos][card.Suit].Remove(card.Char());
+    }
         
 }

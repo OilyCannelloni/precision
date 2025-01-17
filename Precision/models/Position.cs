@@ -20,6 +20,30 @@ public static class PositionExtensions
         };
     }
     
+    public static Position Opposite(this Position pos)
+    {
+        return pos switch
+        {
+            Position.West => Position.East,
+            Position.North => Position.South,
+            Position.East => Position.West,
+            Position.South => Position.North,
+            _ => throw new ArgumentOutOfRangeException(nameof(pos), pos, null)
+        };
+    }
+    
+    public static Position Previous(this Position pos)
+    {
+        return pos switch
+        {
+            Position.West => Position.South,
+            Position.North => Position.West,
+            Position.East => Position.North,
+            Position.South => Position.East,
+            _ => throw new ArgumentOutOfRangeException(nameof(pos), pos, null)
+        };
+    }
+    
     public static IEnumerable<Position> All(this Position pos)
     {
         for (var _ = 0; _ < 4; _++)
@@ -28,5 +52,16 @@ public static class PositionExtensions
             yield return pos;
         }
     }
-    
+
+    public static Position ShiftBy(this Position pos, int times)
+    {
+        return (times % 4) switch
+        {
+            0 => pos,
+            1 => pos.Next(),
+            2 => pos.Opposite(),
+            3 => pos.Previous(),
+            _ => throw new ArgumentOutOfRangeException(nameof(times), times, null)
+        };
+    }
 }

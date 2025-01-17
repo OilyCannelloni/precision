@@ -6,5 +6,6 @@ public enum WebSocketEventType
     CardClicked,
     NewGameRequest,
     NewGameCreated,
-    DealData
+    DealUpdate,
+    Error
 }
