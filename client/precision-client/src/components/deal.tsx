@@ -1,46 +1,17 @@
 ﻿import game_elements from "./game_elements.module.scss"
-import {Hand, HandModel} from "./hand"
-import {Card, CardModel, CardPlaceholder} from "./card"
+import {HandComponent} from "./hand"
+import {CardComponent, CardPlaceholder} from "./card"
 import {Container, Row, Col} from "reactstrap"
-import {IDeal} from "@/models/deal"
+import {useContext} from "react"
+import {HookContext} from "@/common/hooks"
+import {DealMiddle, Position} from "@/models/deal"
 
-export class DealModel implements IDeal {
-    West: HandModel = new HandModel();
-    North: HandModel = new HandModel();
-    East: HandModel = new HandModel();
-    South: HandModel = new HandModel();
-    
-    public constructor(init?: Partial<DealModel>) {
-        Object.assign(this, init);
-    }
-    
-    public static from_str(s: string) {
-        const hands = s.split(" ");
-        return new DealModel({
-            West: HandModel.from_str(hands[0]),
-            North: HandModel.from_str(hands[1]),
-            East: HandModel.from_str(hands[2]),
-            South: HandModel.from_str(hands[3])
-        });
-    }
-}
 
-export class DealMiddleModel {
-    West: CardModel | null = null;
-    North: CardModel | null = null;
-    East: CardModel | null = null;
-    South: CardModel | null = null;
-
-    public constructor(init?: Partial<DealMiddleModel>) {
-        Object.assign(this, init);
-    }
-}
-
-function DealMiddle(dm: DealMiddleModel) {
-    const north = dm.North ? Card(dm.North) : CardPlaceholder();
-    const west = dm.West ? Card(dm.West) : CardPlaceholder();
-    const east = dm.East ? Card(dm.East) : CardPlaceholder();
-    const south = dm.South ? Card(dm.South) : CardPlaceholder();
+function DealMiddleComponent({dm} : {dm: DealMiddle}) {
+    const north = dm[Position.North] ? CardComponent(dm[Position.North]) : CardPlaceholder();
+    const west = dm[Position.West] ? CardComponent(dm[Position.West]) : CardPlaceholder();
+    const east = dm[Position.East] ? CardComponent(dm[Position.East]) : CardPlaceholder();
+    const south = dm[Position.South] ? CardComponent(dm[Position.South]) : CardPlaceholder();
     
     return <div className={game_elements.dealMiddle}>
         <div className={game_elements.dealMiddleCardNorth}>{north}</div>
@@ -50,27 +21,26 @@ function DealMiddle(dm: DealMiddleModel) {
     </div>
 }
 
-export function Deal(
-    {deal, dm = new DealMiddleModel()} 
-    : {deal: DealModel, dm: DealMiddleModel}
-) {
+export function DealComponent() {
+    const hooks = useContext(HookContext)
+    
     return <div className={game_elements.deal}>
         <Container>
             <Row>
                 <Col xl></Col>
-                <Col xl>{Hand(deal.North)}</Col>
+                <Col xl>{HandComponent(Position.North)}</Col>
                 <Col xl></Col>
             </Row>
             <Row>
-                <Col xl>{Hand(deal.West)}</Col>
+                <Col xl>{HandComponent(Position.West)}</Col>
                 <Col xl className={game_elements.dealMiddleWrapper}>
-                    <DealMiddle {...dm}></DealMiddle>
+                    <DealMiddleComponent dm={hooks.DealMiddle.Value}></DealMiddleComponent>
                 </Col>
-                <Col xl>{Hand(deal.East)}</Col>
+                <Col xl>{HandComponent(Position.East)}</Col>
             </Row>
             <Row>
                 <Col xl></Col>
-                <Col xl>{Hand(deal.South)}</Col>
+                <Col xl>{HandComponent(Position.South)}</Col>
                 <Col xl>
                 </Col>
             </Row>

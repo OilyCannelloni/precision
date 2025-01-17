@@ -1,40 +1,31 @@
 ﻿import game_elements from "./game_elements.module.scss"
+import {Card, CardSuit} from "@/models/deal"
 
-export class CardModel {
-    Value: string = "";
-    Suit: string = "";
-    cardStr = () => this.Value + this.Suit;
-    
-    public constructor(cardString: string) {
-        this.Value = cardString[0];
-        this.Suit = cardString[1];
-    }
-}
 
 export function CardPlaceholder() {
-    return <div className={game_elements.cardPlaceHolder}>
+    return <div className={game_elements.cardPlaceHolder} key={"42"}>
     </div>
 }
 
 
-export function Card(cardModel: CardModel) {
+export function CardComponent(card: Card) {
     const color_class = {
-        "s": "text-blue-700",
-        "h": "text-red-500",
-        "d": "text-orange-600",
-        "c": "text-green-600"
-    }[cardModel.Suit] ?? "";
+        [CardSuit.Spades]: "text-blue-700",
+        [CardSuit.Hearts]: "text-red-500",
+        [CardSuit.Diamonds]: "text-orange-600",
+        [CardSuit.Clubs]: "text-green-600"
+    }[card.Suit] ?? "";
     
     const pip = {
-        "s": "♠",
-        "h": "♥",
-        "d": "♦",
-        "c": "♣"
-    }[cardModel.Suit] ?? "";
+        [CardSuit.Spades]: "♠",
+        [CardSuit.Hearts]: "♥",
+        [CardSuit.Diamonds]: "♦",
+        [CardSuit.Clubs]: "♣"
+    }[card.Suit] ?? "";
     
-    return <div className={game_elements.card} key={cardModel.cardStr()}>
+    return <div className={game_elements.card} key={card.cardStr()}>
         <div className={`${game_elements.cardText} ${color_class}`}>
-            {cardModel.Value}
+            {card.Value}
         </div>
         <div className={`${game_elements.cardText} ${color_class}`}>
             {pip}

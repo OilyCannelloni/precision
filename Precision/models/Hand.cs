@@ -1,4 +1,5 @@
-﻿using Precision.algorithm;
+﻿using System.Text.Json.Serialization;
+using Precision.algorithm;
 
 namespace Precision.models;
 
