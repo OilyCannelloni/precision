@@ -30,12 +30,16 @@ public class Trick(Position dealer) : PositionIndexable<Card?>
         foreach (var pos in Dealer.OneCycle())
         {
             var card = this[pos] ?? throw new NullReferenceException("Cannot resolve an incomplete trick");;
-            if (card.Suit == leadSuit && card.IntValue > bestCardValue)
+            if (card.Suit == leadSuit)
             {
-                bestCardValue = card.IntValue;
-                bestCardPosition = pos;
+                if (card.IntValue > bestCardValue)
+                {
+                    bestCardValue = card.IntValue;
+                    bestCardPosition = pos;
+                    
+                }  
                 continue;
-            }
+            } 
 
             if (card.Suit == trumpSuit)
             {

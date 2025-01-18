@@ -31,6 +31,7 @@ public class Game(DealBox box)
         {
             ActionPlayer = CurrentTrick.ResolveWinner(
                 Contract?.Suit ?? throw new NullReferenceException("Cannot resolve a trick without a contract"));
+            CurrentTrick = new Trick(ActionPlayer);
         }
         else
         {
@@ -56,7 +57,7 @@ public class Game(DealBox box)
         
         if (card.Suit == leadCard.Suit)
             return true;
-        if (CurrentDealState[ActionPlayer][card.Suit].Length == 0)
+        if (CurrentDealState[ActionPlayer][leadCard.Suit].Length == 0)
             return true;
         return false;
     }
