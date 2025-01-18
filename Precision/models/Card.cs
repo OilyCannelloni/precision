@@ -3,27 +3,31 @@ using Precision.algorithm.json;
 
 namespace Precision.models;
 
-[JsonConverter(typeof(CardJsonConverter))]
+
 public class Card
 {
     public const string Values = "23456789TJQKA";
     
     public Suit Suit { get; set; }
-    public int Value { get; set; }
+    public char Value { get; set; }
+    
+    [JsonIgnore]
+    public int IntValue { get; set; }
 
     public Card(string str)
     {
         Suit = SuitExtensions.FromChar(char.ToLower(str[1]));
-        Value = Values.IndexOf(char.ToUpper(str[0]));
+        IntValue = Values.IndexOf(char.ToUpper(str[0]));
+        Value = char.ToUpper(str[0]);
     }
 
     public char Char()
     {
-        return Values[Value];
+        return Values[IntValue];
     }
 
     public override string ToString()
     {
-        return $"{Values[Value]}{Suit.ToChar()}";
+        return $"{Values[IntValue]}{Suit.ToChar()}";
     }
 }

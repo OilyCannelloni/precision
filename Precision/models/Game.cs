@@ -9,7 +9,12 @@ public class Game(DealBox box)
     public Trick CurrentTrick = new(box.Dealer);
     public Bidding Bidding { get; set; } = new();
     public Position ActionPlayer { get; set; } = box.Dealer;
-    public Bid? Contract { get; set; } = null!;
+    public Bid? Contract { get; set; } = new Bid
+    {
+        Type = BidType.Bid,
+        Suit = Suit.Spades,
+        Level = 4
+    };
     public int NsTricks = 0;
     public int EwTricks = 0;
 
@@ -35,7 +40,7 @@ public class Game(DealBox box)
         return new PlayCardApprovedDto
         {
             ChangedPosition = requestPlayer,
-            PlayedCard = card.ToString(),
+            PlayedCard = card,
             CurrentTrick = CurrentTrick,
             ActionPlayer = ActionPlayer
         };

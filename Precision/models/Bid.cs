@@ -1,6 +1,6 @@
 ﻿namespace Precision.models;
 
-public class Bid(string str)
+public class Bid
 {
     public BidType Type { get; set; }
     public int Level { get; set; }

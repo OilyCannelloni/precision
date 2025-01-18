@@ -1,10 +1,11 @@
 ﻿"use client";
 
+import {plainToClass} from "class-transformer"
 import { useEffect, useCallback, useContext } from 'react';
 import useWebSocket from 'react-use-websocket'
 import game_elements from "@/components/game_elements.module.scss"
 import {INewGameDTO, IPlayCardApprovedDTO, ICardClickedDTO, SocketEvent, SocketEventType} from '@/models/socket';
-import {Deal, Position, CardSuit, Card, CardSuitHelper} from "@/models/deal"
+import {Deal, Position, CardSuit, Card, CardSuitHelper, Trick} from "@/models/deal"
 import {HookContext, GlobalVarContext} from "@/common/hooks"
 
 
@@ -51,11 +52,20 @@ export function Connect() {
             case SocketEventType.PlayCardApproved:
                 const pcaDTO = JSON.parse(event.Data) as IPlayCardApprovedDTO
                 const pos = pcaDTO.ChangedPosition
-                const card = new Card(pcaDTO.PlayedCard[0], CardSuitHelper.fromString(pcaDTO.PlayedCard[1]))
-                console.log(card, hooks)
+                const card = Card.fromPartial(pcaDTO.PlayedCard)
+                console.log(card)
                 const oldHolding = hooks[pos][card.Suit].Value
                 const newHolding = oldHolding.replace(card.Value, "");
                 hooks[pos][card.Suit].SetValue(newHolding)
+                
+                const trick = Object.assign(new Trick(), pcaDTO.CurrentTrick)
+                trick[Position.West] = pcaDTO.CurrentTrick.West ? Card.fromPartial(pcaDTO.CurrentTrick.West) : null
+                trick[Position.North] = pcaDTO.CurrentTrick.North ? Card.fromPartial(pcaDTO.CurrentTrick.North) : null
+                trick[Position.East] = pcaDTO.CurrentTrick.East ? Card.fromPartial(pcaDTO.CurrentTrick.East) : null
+                trick[Position.South] = pcaDTO.CurrentTrick.South ? Card.fromPartial(pcaDTO.CurrentTrick.South) : null
+                
+                console.log(trick)
+                hooks.DealMiddle.SetValue(trick)
                 break;
             case SocketEventType.Error:
                 const message = event.Data;

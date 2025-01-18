@@ -1,7 +1,7 @@
 ﻿"use client"
 
 import {useState, createContext, ReactNode, Dispatch, SetStateAction} from "react"
-import {CardSuit, Position, DealMiddle, Card} from "@/models/deal"
+import {CardSuit, Position, Trick, Card} from "@/models/deal"
 
 
 class HookWrapper<T> {
@@ -27,7 +27,7 @@ interface DealHooks {
     [Position.North]: HandHooks
     [Position.East]: HandHooks
     [Position.South]: HandHooks
-    DealMiddle: HookWrapper<DealMiddle>
+    DealMiddle: HookWrapper<Trick>
     CardClicked: HookWrapper<Card>
 }
 
@@ -50,7 +50,7 @@ export function HookProvider({ children } : {children: ReactNode}) {
         }
 
         const middleHook = () => {
-            const [val, set] = useState({} as DealMiddle)
+            const [val, set] = useState({} as Trick)
             return {
                 Value: val,
                 SetValue: set

@@ -3,6 +3,7 @@ using System.Text.Json.Serialization;
 
 namespace Precision.models;
 
+[JsonConverter(typeof(JsonStringEnumConverter))]
 public enum Suit
 {
     Pass,

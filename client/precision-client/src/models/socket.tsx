@@ -26,7 +26,7 @@ export interface ICardClickedDTO {
 
 export interface IPlayCardApprovedDTO {
     ChangedPosition: Position,
-    PlayedCard: string,
+    PlayedCard: Card,
     CurrentTrick: Trick,
     ActionPlayer: Position
 }

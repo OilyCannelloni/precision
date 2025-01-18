@@ -1,4 +1,7 @@
-﻿export enum Position {
+﻿import {Type} from "class-transformer"
+
+
+export enum Position {
     West = "West", 
     North = "North",
     East = "East",
@@ -53,6 +56,12 @@ export class Card {
     public constructor(value: string, suit: CardSuit) {
         this.Value = value
         this.Suit = suit;
+    }
+    
+    public static fromPartial(init: Partial<Card>): Card {
+        const card = new Card("4", CardSuit.Clubs)
+        Object.assign(card, init)
+        return card
     }
 }
 
