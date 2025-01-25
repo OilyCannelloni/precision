@@ -2,6 +2,6 @@
 
 public class NewGameDto
 {
-    public string GameId { get; set; }
-    public DealBox DealBox { get; set; }
+    public string GameId { get; set; } = string.Empty;
+    public DealBox DealBox { get; set; } = null!;
 }

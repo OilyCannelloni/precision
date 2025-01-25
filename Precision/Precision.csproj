@@ -7,9 +7,19 @@
         <Nullable>enable</Nullable>
     </PropertyGroup>
 
+    <PropertyGroup Condition=" '$(Configuration)' == 'Debug' ">
+      <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
+    </PropertyGroup>
+
     <ItemGroup>
       <PackageReference Include="EmbedIO" Version="3.5.2" />
       <PackageReference Include="Swan.Core" Version="7.0.0-beta.2" />
+    </ItemGroup>
+    
+    <ItemGroup>
+        <Content Include="lib/dds.dll">
+            <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+        </Content>
     </ItemGroup>
 
 </Project>
