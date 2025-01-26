@@ -1,12 +1,11 @@
-﻿using System.Text.Json.Serialization;
-using Precision.algorithm;
+﻿using Precision.algorithm;
 using Precision.models.common;
 
 namespace Precision.models;
 
-public class Hand : SuitIndexable<string>
+public class Hand : SuitIndexable<Holding>
 {
-    public IEnumerable<string> Suits()
+    public IEnumerable<Holding> Suits()
     {
         yield return Spades;
         yield return Hearts;
@@ -33,17 +32,19 @@ public class Hand : SuitIndexable<string>
                 throw new ArgumentException("Invalid card value.");
             store[card / 13].Add("23456789TJQKA"[card % 13]);
         }
+        
+        // TODO: optimize
         return new Hand
         {
-            Spades = string.Join("", store[0].OrderBy(c => -c.CardValue())),
-            Hearts = string.Join("", store[1].OrderBy(c => -c.CardValue())),
-            Diamonds = string.Join("", store[2].OrderBy(c => -c.CardValue())),
-            Clubs = string.Join("", store[3].OrderBy(c => -c.CardValue()))
+            Spades = new Holding(string.Join("", store[0].OrderBy(c => -c.CardValue()))),
+            Hearts = new Holding(string.Join("", store[1].OrderBy(c => -c.CardValue()))),
+            Diamonds = new Holding(string.Join("", store[2].OrderBy(c => -c.CardValue()))),
+            Clubs = new Holding(string.Join("", store[3].OrderBy(c => -c.CardValue()))),
         };
     }
 
     public bool ContainsCard(Card card)
     {
-        return this[card.Suit].Contains(card.Char());
+        return this[card.Suit].Contains(card.Value);
     }
 }

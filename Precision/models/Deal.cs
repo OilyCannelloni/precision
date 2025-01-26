@@ -13,6 +13,6 @@ public class Deal : PositionIndexable<Hand>
 
     public void RemoveCard(Position pos, Card card)
     {
-        this[pos][card.Suit] = this[pos][card.Suit].PopChar(card.Char());
+        this[pos][card.Suit].Remove(card);
     }
 }

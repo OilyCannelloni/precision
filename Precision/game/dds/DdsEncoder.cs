@@ -43,19 +43,7 @@ public static class DdsEncoder
 
     public static int EncodeHolding(string holding)
     {
-        var hi = 0;
-        var ddsHand = 0;
-        foreach (var cardValue in Card.Values.Reverse())
-        {
-            ddsHand <<= 1;
-            if   (hi < holding.Length && cardValue == holding[hi])
-            {
-                ddsHand += 1;
-                hi++;
-            }
-        }
-
-        return ddsHand << 2;
+        throw new NotImplementedException();
     }
 
     public static DdsDeal EncodeDeal(Deal deal)

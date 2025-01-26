@@ -57,7 +57,7 @@ public class Game(DealBox box)
         
         if (card.Suit == leadCard.Suit)
             return true;
-        if (CurrentDealState[ActionPlayer][leadCard.Suit].Length == 0)
+        if (CurrentDealState[ActionPlayer][leadCard.Suit].IsEmpty())
             return true;
         return false;
     }
