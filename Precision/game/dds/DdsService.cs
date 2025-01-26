@@ -3,14 +3,13 @@
 
 using System.Runtime.InteropServices;
 
-public struct DDS_ddTableDealPBN 
+public struct DdsDeal
 {
-    public IntPtr cards;
-}
-
-public struct DDS_ddTableResults
-{
-    public IntPtr resTable;
+    public int Trump;
+    public int First;
+    public int[] CurrentTrickSuit;
+    public int[] CurrentTrickRank;
+    public int[] RemaingCards;
 }
 
 

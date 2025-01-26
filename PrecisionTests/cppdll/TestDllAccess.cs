@@ -24,7 +24,7 @@ public class TestDllAccess
     [Test]
     public void DdTable()
     {
-        var dealStr = "N:T.KQ985.86.A9752 K3.AT7.QJT9753.3 AJ842.4.AK.KJ864 Q9765.J632.42.QT\0";
+        var dealStr = "W:T.KQ985.86.A9752 K3.AT7.QJT9753.3 AJ842.4.AK.KJ864 Q9765.J632.42.QT\0";
         var deal = new char[80];
         for (var i = 0; i < dealStr.Length; i++)
         {
@@ -45,4 +45,11 @@ public class TestDllAccess
         
         resultHandle.Free();
     }
+
+    [Test]
+    public void SolveBoard()
+    {
+        
+    }
+    
 }
