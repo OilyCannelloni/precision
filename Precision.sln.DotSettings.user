@@ -11,6 +11,8 @@
     &lt;TestId&gt;NUnit3x::B411BAD5-F8D5-4DF6-BE7F-3EE40006AA66::net9.0::PrecisionTests.cppdll.TestDllAccess.ErrorCode&lt;/TestId&gt;&#xD;
     &lt;TestId&gt;NUnit3x::B411BAD5-F8D5-4DF6-BE7F-3EE40006AA66::net9.0::PrecisionTests.cppdll.TestDllAccess.DdTable&lt;/TestId&gt;&#xD;
     &lt;TestId&gt;NUnit3x::B411BAD5-F8D5-4DF6-BE7F-3EE40006AA66::net9.0::PrecisionTests.cppdll.TestDllEncoder.TestEncodeHolding&lt;/TestId&gt;&#xD;
+    &lt;TestId&gt;NUnit3x::B411BAD5-F8D5-4DF6-BE7F-3EE40006AA66::net9.0::PrecisionTests.cppdll.TestHolding.TestAdd&lt;/TestId&gt;&#xD;
+    &lt;TestId&gt;NUnit3x::B411BAD5-F8D5-4DF6-BE7F-3EE40006AA66::net9.0::PrecisionTests.cppdll.TestHolding.TestRemove&lt;/TestId&gt;&#xD;
   &lt;/TestAncestor&gt;&#xD;
 &lt;/SessionState&gt;</s:String>
 	

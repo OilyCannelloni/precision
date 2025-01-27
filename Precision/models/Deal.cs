@@ -1,6 +1,4 @@
-﻿using Precision.algorithm;
-using Precision.game;
-using Precision.models.common;
+﻿using Precision.models.common;
 
 namespace Precision.models;
 

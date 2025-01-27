@@ -1,7 +1,10 @@
 ﻿using System.Text;
+using System.Text.Json.Serialization;
+using Precision.algorithm.json;
 
 namespace Precision.models;
 
+[JsonConverter(typeof(HoldingSerializer))]
 public class Holding
 {
     public int Value { get; private set; }

@@ -45,6 +45,6 @@ public class Hand : SuitIndexable<Holding>
 
     public bool ContainsCard(Card card)
     {
-        return this[card.Suit].Contains(card.Value);
+        return this[card.Suit].Contains(card);
     }
 }
