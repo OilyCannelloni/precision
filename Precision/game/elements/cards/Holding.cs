@@ -49,6 +49,11 @@ public class Holding
     {
         Value &= ~card.IntValue;
     }
+    
+    public void Remove(CardValue cv)
+    {
+        Value &= ~cv;
+    }
 
     public void Add(Card card)
     {
@@ -71,5 +76,19 @@ public class Holding
         for (var p = 16384; p >= 4; p /= 2)
             if ((Value & (CardValue)p) != 0)
                 yield return (CardValue)p;
+    }
+
+    public CardValue PopLowest()
+    {
+        foreach (var cv in Enum.GetValues<CardValue>())
+        {
+            if ((Value & cv) != 0)
+            {
+                Remove(cv);
+                return cv;
+            }
+        }
+
+        throw new ArgumentException("PopLowest() from empty holding");
     }
 }

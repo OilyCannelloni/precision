@@ -21,10 +21,9 @@ public class Trick(Position dealer) : PositionIndexable<Card?>
         _current = _current.Next();
     }
 
-    public bool IsComplete()
-    {
-        return !Position.West.OneCycle().Select(p => this[p]).Contains(null);
-    }
+    public bool IsComplete() => !Position.West.OneCycle().Select(p => this[p]).Contains(null);
+
+    public bool IsEmpty() => Position.West.OneCycle().Select(p => this[p]).All(card => card == null);
 
     public Position ResolveWinner(Suit trumpSuit)
     {

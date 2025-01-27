@@ -8,21 +8,21 @@ namespace Precision.game;
 public class Game(DealBox box)
 {
     public Trick CurrentTrick = new(box.Dealer);
-    public int EwTricks = 0;
-    public int NsTricks = 0;
-    public DealBox DealBox { get; set; } = box;
+    protected int EwTricks = 0;
+    protected int NsTricks = 0;
+    protected DealBox DealBox { get; set; } = box;
     public Deal CurrentDealState { get; set; } = box.Deal;
-    public Bidding Bidding { get; set; } = new();
-    public Position ActionPlayer { get; set; } = box.Dealer;
+    protected Bidding Bidding { get; set; } = new();
+    protected virtual Position ActionPlayer { get; set; } = box.Dealer;
 
-    public Bid? Contract { get; set; } = new()
+    protected Bid? Contract { get; set; } = new()
     {
         Type = BidType.Bid,
         Suit = Suit.Spades,
         Level = 4
     };
 
-    public PlayCardApprovedDto? PlayCard(Card card)
+    public DealUpdateDto? PlayCard(Card card)
     {
         if (!_canPlayCard(card))
             return null;
@@ -42,7 +42,7 @@ public class Game(DealBox box)
             ActionPlayer = ActionPlayer.Next();
         }
 
-        return new PlayCardApprovedDto
+        return new DealUpdateDto
         {
             ChangedPosition = requestPlayer,
             PlayedCard = card,

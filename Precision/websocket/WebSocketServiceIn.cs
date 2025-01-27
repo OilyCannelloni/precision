@@ -1,5 +1,6 @@
 ﻿using System.Runtime.Serialization;
 using System.Text.Json;
+using Precision.controllers;
 using Precision.deals;
 using Precision.game;
 using Precision.game.elements.cards;
@@ -9,8 +10,12 @@ using Precision.models.socket;
 
 namespace Precision.websocket;
 
-public class WebSocketService(DealService dealService, GameService gameService)
+public partial class WebSocketService(WebSocketController controller)
 {
+    private readonly DealService _dealService = new();
+    private readonly GameService _gameService = new();
+    private readonly WebSocketController _controller = controller;
+
     public WebSocketEvent HandleEvent(WebSocketEvent @event)
     {
         return @event.Type switch
@@ -25,9 +30,8 @@ public class WebSocketService(DealService dealService, GameService gameService)
     {
         var ccDto = JsonSerializer.Deserialize<CardClickedDto>(@event.Data)
                     ?? throw new SerializationException("Invalid payload for CardClicked event");
-
-        var game = gameService.GetGame(ccDto.GameId);
-        var dealUpdate = game.PlayCard(new Card(ccDto.Card));
+        
+        var dealUpdate = _gameService.OnCardPlayRequest(ccDto.GameId, new Card(ccDto.Card));
         if (dealUpdate == null)
             return new WebSocketEvent
             {
@@ -44,9 +48,9 @@ public class WebSocketService(DealService dealService, GameService gameService)
 
     private WebSocketEvent HandleNewGameRequest(WebSocketEvent @event)
     {
-        var deal = dealService.GetRandomDeal();
+        var deal = _dealService.GetRandomDeal();
         var dealBox = new DealBox(2, deal);
-        var gameId = gameService.CreateGame(dealBox);
+        var gameId = _gameService.CreateGame(dealBox);
         var str = JsonSerializer.Serialize(new NewGameDto
             { GameId = gameId, DealBox = dealBox, CurrentTrick = new Trick(dealBox.Dealer) });
 

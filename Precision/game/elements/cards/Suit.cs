@@ -79,4 +79,16 @@ public static class SuitExtensions
             suit = suit.Next();
         }
     }
+
+    public static Suit GetRandomSuit()
+    {
+        return Random.Shared.Next(4) switch
+        {
+            0 => Suit.Spades,
+            1 => Suit.Hearts,
+            2 => Suit.Diamonds,
+            3 => Suit.Clubs,
+            _ => throw new ArgumentOutOfRangeException()
+        };
+    }
 }

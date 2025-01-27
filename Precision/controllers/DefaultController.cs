@@ -9,7 +9,7 @@ namespace Precision.controllers;
 
 public class DefaultController : WebApiController
 {
-    private readonly DealService _dealService = new(new DealGenerator());
+    private readonly DealService _dealService = new();
 
     [Route(HttpVerbs.Get, "/")]
     public string GetRoot()

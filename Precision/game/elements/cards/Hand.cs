@@ -57,4 +57,15 @@ public class Hand : SuitIndexable<Holding>
                 yield return card;
         }
     }
+
+    public void RemoveCard(Card card)
+    {
+        this[card.Suit].Remove(card);
+    }
+
+    public Card PopLowestFrom(Suit suit)
+    {
+        var cv = this[suit].PopLowest();
+        return new Card(suit, cv);
+    }
 }

@@ -1,4 +1,6 @@
-﻿using Precision.game.elements.deal;
+﻿using Precision.game.elements.cards;
+using Precision.game.elements.deal;
+using Precision.models.dto;
 
 namespace Precision.game;
 
@@ -21,5 +23,11 @@ public class GameService
     public void RemoveGame(string id)
     {
         _games.Remove(id);
+    }
+
+    public DealUpdateDto? OnCardPlayRequest(string gameId, Card card)
+    {
+        var game = GetGame(gameId);
+        return game.PlayCard(card);
     }
 }

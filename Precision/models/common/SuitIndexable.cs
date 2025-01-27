@@ -52,4 +52,16 @@ public abstract class SuitIndexable<T>
         yield return this[Suit.Diamonds];
         yield return this[Suit.Clubs];
     }
+
+    public T RandomSubValue()
+    {
+        return Random.Shared.Next(4) switch
+        {
+            0 => Spades,
+            1 => Hearts,
+            2 => Diamonds,
+            3 => Clubs,
+            _ => throw new ArgumentException("Invalid Index")
+        };
+    }
 }

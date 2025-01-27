@@ -3,10 +3,12 @@ using Precision.game.elements.deal;
 
 namespace Precision.deals;
 
-public class DealService(DealGenerator generator)
+public class DealService
 {
+    private readonly DealGenerator _generator = new ();
+
     public Deal GetRandomDeal()
     {
-        return generator.GetRandomDeal();
+        return _generator.GetRandomDeal();
     }
 }

@@ -1,7 +1,4 @@
 ﻿using EmbedIO.WebSockets;
-using Precision.algorithm;
-using Precision.deals;
-using Precision.game;
 using Precision.models.socket;
 using Precision.websocket;
 using Swan.Formatters;
@@ -10,13 +7,13 @@ namespace Precision.controllers;
 
 public class WebSocketController : WebSocketModule
 {
-    private readonly WebSocketService _webSocketService =
-        new(new DealService(new DealGenerator()), new GameService());
+    private readonly WebSocketService _webSocketService;
 
     public WebSocketController(string urlPath, bool enableConnectionWatchdog)
         : base(urlPath, enableConnectionWatchdog)
     {
         AddProtocol("json");
+        _webSocketService = new WebSocketService(this);
     }
 
     protected override async Task OnMessageReceivedAsync(IWebSocketContext context, byte[] buffer,
@@ -50,5 +47,9 @@ public class WebSocketController : WebSocketModule
         var str = Json.Serialize(evt);
         Console.WriteLine($"TX: {str}");
         await SendAsync(ctx, str);
+    }
+
+    public async Task SendEvent(WebSocketEvent evt)
+    {
     }
 }

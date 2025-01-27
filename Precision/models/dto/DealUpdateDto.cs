@@ -3,7 +3,7 @@ using Precision.game.elements.deal;
 
 namespace Precision.models.dto;
 
-public class PlayCardApprovedDto
+public class DealUpdateDto
 {
     public required Position ChangedPosition { get; set; }
     public required Card PlayedCard { get; set; }
