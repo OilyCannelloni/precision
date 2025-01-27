@@ -8,7 +8,6 @@ public class DealBox(int number, Deal deal)
     public int Number { get; set; } = number;
     public Vulnerability Vulnerability { get; set; } = GetVulFromNumber(number);
     public Position Dealer { get; set; } = GetDealerFromNumber(number);
-
     public Deal Deal { get; set; } = deal;
 
     private static Vulnerability GetVulFromNumber(int number)

@@ -1,6 +1,5 @@
 ﻿"use client";
 
-import {plainToClass} from "class-transformer"
 import { useEffect, useCallback, useContext } from 'react';
 import useWebSocket from 'react-use-websocket'
 import game_elements from "@/components/game_elements.module.scss"
@@ -8,10 +7,10 @@ import {INewGameDTO, IPlayCardApprovedDTO, ICardClickedDTO, SocketEvent, SocketE
 import {Deal, Position, CardSuit, Card, CardSuitHelper, Trick} from "@/models/deal"
 import {HookContext, GlobalVarContext} from "@/common/hooks"
 
+var gameId = "xxx";
 
 export function Connect() {
     const hooks = useContext(HookContext)
-    const globals = useContext(GlobalVarContext)
     const address = "ws://localhost:9696/ws"
     const { sendMessage, lastMessage, readyState } = useWebSocket(address, {protocols: "json"})
     
@@ -25,13 +24,14 @@ export function Connect() {
         sendMessage(str)
     }, [])
     
-    const setDealData = ((deal: Deal) => {
+    const setDealData = ((gameState: INewGameDTO) => {
         for (const pos in Position) {
             for (const suit in CardSuit) {
                 // @ts-ignore
-                hooks[pos][suit].SetValue(deal[pos][suit])
+                hooks[pos][suit].SetValue(gameState.DealBox.Deal[pos][suit])
             }
         }
+        hooks.DealMiddle.SetValue(gameState.CurrentTrick)
     })
 
     useEffect(() => {
@@ -45,15 +45,14 @@ export function Connect() {
                 break;
             case SocketEventType.NewGameCreated:
                 const newGameDTO = JSON.parse(event.Data) as INewGameDTO
-                const deal = newGameDTO.DealBox.Deal
-                setDealData(deal)
-                globals.GameId = newGameDTO.GameId;
+                setDealData(newGameDTO)
+                gameId = newGameDTO.GameId;
+                console.log("New game: " + newGameDTO.GameId)
                 break;
             case SocketEventType.PlayCardApproved:
                 const pcaDTO = JSON.parse(event.Data) as IPlayCardApprovedDTO
                 const pos = pcaDTO.ChangedPosition
                 const card = Card.fromPartial(pcaDTO.PlayedCard)
-                console.log(card)
                 const oldHolding = hooks[pos][card.Suit].Value
                 const newHolding = oldHolding.replace(card.Value, "");
                 hooks[pos][card.Suit].SetValue(newHolding)
@@ -64,7 +63,6 @@ export function Connect() {
                 trick[Position.East] = pcaDTO.CurrentTrick.East ? Card.fromPartial(pcaDTO.CurrentTrick.East) : null
                 trick[Position.South] = pcaDTO.CurrentTrick.South ? Card.fromPartial(pcaDTO.CurrentTrick.South) : null
                 
-                console.log(trick)
                 hooks.DealMiddle.SetValue(trick)
                 break;
             case SocketEventType.Error:
@@ -81,13 +79,14 @@ export function Connect() {
         function handleCardClicked(event: Event) {
             const card = (event as CustomEvent).detail as Card
             const dto: ICardClickedDTO = {
-                GameId: globals.GameId,
+                GameId: gameId,
                 Card: card.cardStr()
             }
             const socketEvent: SocketEvent = {
                 Type: SocketEventType.CardClicked,
                 Data: JSON.stringify(dto)
             }
+            console.log(gameId)
             sendMessage(JSON.stringify(socketEvent))
         }
         
@@ -96,7 +95,7 @@ export function Connect() {
         return () => {
             window.removeEventListener("cardClicked", handleCardClicked)
         }
-    }, []);
+    }, [gameId]);
     
     
     return <div className={game_elements.redealButton}>

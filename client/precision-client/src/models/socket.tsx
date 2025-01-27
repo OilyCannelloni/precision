@@ -17,6 +17,7 @@ export interface SocketEvent {
 export interface INewGameDTO {
     GameId: string,
     DealBox: IDealBox
+    CurrentTrick: Trick
 }
 
 export interface ICardClickedDTO {

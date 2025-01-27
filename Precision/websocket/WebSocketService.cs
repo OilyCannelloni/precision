@@ -47,7 +47,8 @@ public class WebSocketService(DealService dealService, GameService gameService)
         var deal = dealService.GetRandomDeal();
         var dealBox = new DealBox(2, deal);
         var gameId = gameService.CreateGame(dealBox);
-        var str = JsonSerializer.Serialize(new NewGameDto { GameId = gameId, DealBox = dealBox });
+        var str = JsonSerializer.Serialize(new NewGameDto
+            { GameId = gameId, DealBox = dealBox, CurrentTrick = new Trick(dealBox.Dealer)});
         
         return new WebSocketEvent
         {

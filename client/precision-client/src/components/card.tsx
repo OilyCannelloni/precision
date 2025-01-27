@@ -30,8 +30,6 @@ export function CardComponent(card: Card) {
         window.dispatchEvent(event)
     }
     
-    console.log(card)
-    
     return <div className={game_elements.card} key={card.cardStr()} onClick={cardClicked}>
         <div className={`${game_elements.cardText} ${color_class}`}>
             {card.Value}

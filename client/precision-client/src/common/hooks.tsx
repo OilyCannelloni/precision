@@ -32,12 +32,7 @@ interface DealHooks {
 }
 
 
-interface GlobalVariables {
-    GameId: string
-}
-
 export const HookContext = createContext({} as DealHooks)
-export const GlobalVarContext = createContext({} as GlobalVariables)
 
 export function HookProvider({ children } : {children: ReactNode}) {
      const hooks = (() => {
@@ -75,15 +70,9 @@ export function HookProvider({ children } : {children: ReactNode}) {
             CardClicked: new HookWrapper<Card>()
         }
     })()
-
     
-    const globals: GlobalVariables = {
-        GameId: ""
-    }
-    
-    return <GlobalVarContext.Provider value={globals}>
-        <HookContext.Provider value={hooks}>
+    return <HookContext.Provider value={hooks}>
             {children}
         </HookContext.Provider>
-    </GlobalVarContext.Provider> 
+
 }
