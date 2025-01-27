@@ -2,15 +2,27 @@
 
 namespace Precision.game.elements.cards;
 
-public class Card(string str)
+public class Card
 {
-    public const string Values = "23456789TJQKA";
+    public Card(string str)
+    {
+        Suit = str[1].ToSuit();
+        Value = char.ToUpper(str[0]);
+        IntValue = str[0].ToCardValue();
+    }
 
-    public Suit Suit { get; set; } = SuitExtensions.FromChar(char.ToLower(str[1]));
+    public Card(Suit suit, CardValue cardValue)
+    {
+        Suit = suit;
+        IntValue = cardValue;
+        Value = cardValue.ToChar();
+    }
 
-    public char Value { get; set; } = char.ToUpper(str[0]);
+    public Suit Suit { get; set; }
 
-    [JsonIgnore] public int IntValue { get; set; } = 1 << (Values.IndexOf(char.ToUpper(str[0])) + 2);
+    public char Value { get; set; }
+
+    [JsonIgnore] public CardValue IntValue { get; set; }
 
     public override string ToString()
     {

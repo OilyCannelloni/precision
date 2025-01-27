@@ -47,4 +47,14 @@ public class Hand : SuitIndexable<Holding>
     {
         return this[card.Suit].Contains(card);
     }
+
+    public IEnumerable<Card> AsCards()
+    {
+        foreach (var suit in Suit.Spades.OneCycle())
+        {
+            var suitCards = this[suit].AsCardValues().Select(cv => new Card(suit, cv));
+            foreach (var card in suitCards)
+                yield return card;
+        }
+    }
 }

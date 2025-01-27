@@ -30,7 +30,7 @@ public class Trick(Position dealer) : PositionIndexable<Card?>
     {
         var leadSuit = this[Dealer]?.Suit ?? throw new NullReferenceException("Cannot resolve an incomplete trick");
         var bestCardPosition = Dealer;
-        var bestCardValue = 0;
+        var bestCardValue = CardValue._2;
         foreach (var pos in Dealer.OneCycle())
         {
             var card = this[pos] ?? throw new NullReferenceException("Cannot resolve an incomplete trick");

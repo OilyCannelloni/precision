@@ -2,6 +2,7 @@
 
 namespace Precision.game.elements.cards;
 
+[Flags]
 public enum CardValue
 {
     _2 = 4,
@@ -21,23 +22,36 @@ public enum CardValue
 
 public static class CardValueUtil
 {
-    public static int GetChar(int cardValue)
+    public const string CharValues = "23456789TJQKA";
+    
+    public static char ToChar(this CardValue cardValue)
     {
+        var cardValueInt = (int)cardValue;
         var bits = 0;
-        while (cardValue >= 16)
+        while (cardValueInt >= 16)
         {
             bits += 4;
-            cardValue >>= 4;
+            cardValueInt >>= 4;
         }
 
-        while (cardValue > 0)
+        while (cardValueInt > 0)
         {
             bits++;
-            cardValue >>= 1;
+            cardValueInt >>= 1;
         }
 
         if (!bits.IsBetween(2, 14))
-            throw new ArithmeticException($"Invalid card value: {cardValue}");
-        return Card.Values[bits - 2];
+            throw new ArithmeticException($"Invalid card value: {cardValueInt}");
+        return CharValues[bits - 2];
+    }
+
+    public static CardValue ToCardValue(this char @char)
+    {
+        var index = CharValues.IndexOf(@char);
+        if (index == -1)
+            throw new ArgumentException($"Invalid card char: {@char}");
+
+        var intValue = 1 << (index + 2);
+        return (CardValue)intValue;
     }
 }

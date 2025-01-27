@@ -44,4 +44,12 @@ public abstract class SuitIndexable<T>
             }
         }
     }
+
+    protected IEnumerable<T> AllSubValues()
+    {
+        yield return this[Suit.Spades];
+        yield return this[Suit.Hearts];
+        yield return this[Suit.Diamonds];
+        yield return this[Suit.Clubs];
+    }
 }

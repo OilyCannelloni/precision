@@ -12,18 +12,18 @@ public class Holding
         Value = Encode(cards);
     }
 
-    public int Value { get; private set; }
+    public CardValue Value { get; private set; }
 
     public bool IsEmpty()
     {
         return Value == 0;
     }
 
-    public static int Encode(string cards)
+    public static CardValue Encode(string cards)
     {
         var i = 0;
         var encoded = 0;
-        foreach (var cardValue in Card.Values.Reverse())
+        foreach (var cardValue in CardValueUtil.CharValues.Reverse())
         {
             encoded <<= 1;
             if (i < cards.Length && cardValue == cards[i])
@@ -32,8 +32,7 @@ public class Holding
                 i++;
             }
         }
-
-        return encoded << 2;
+        return (CardValue)(encoded << 2);
     }
 
     public bool Contains(Card card)
@@ -41,9 +40,9 @@ public class Holding
         return (Value & card.IntValue) > 0;
     }
 
-    public bool Contains(int cardIntValue)
+    public bool Contains(CardValue cv)
     {
-        return (Value & cardIntValue) > 0;
+        return (Value & cv) > 0;
     }
 
     public void Remove(Card card)
@@ -58,12 +57,19 @@ public class Holding
 
     public override string ToString()
     {
-        var i = Card.Values.Length - 1;
+        var i = CardValueUtil.CharValues.Length - 1;
         var ss = new StringBuilder();
         for (var p = 16384; p >= 4; p /= 2, i--)
-            if ((Value & p) != 0)
-                ss.Append(Card.Values[i]);
+            if ((Value & (CardValue)p) != 0)
+                ss.Append(CardValueUtil.CharValues[i]);
 
         return ss.ToString();
+    }
+
+    public IEnumerable<CardValue> AsCardValues()
+    {
+        for (var p = 16384; p >= 4; p /= 2)
+            if ((Value & (CardValue)p) != 0)
+                yield return (CardValue)p;
     }
 }

@@ -30,7 +30,7 @@ public static class SuitExtensions
         throw new ArgumentException($"Invalid comparison: {@this} > {other}");
     }
 
-    public static Suit FromChar(char c)
+    public static Suit ToSuit(this char c)
     {
         return char.ToLower(c) switch
         {
@@ -56,5 +56,27 @@ public static class SuitExtensions
             Suit.NT => 'n',
             _ => throw new ArgumentOutOfRangeException(nameof(suit), suit, null)
         };
+    }
+
+    public static Suit Next(this Suit suit)
+    {
+        return suit switch
+        {
+            Suit.Clubs => Suit.Spades,
+            Suit.Diamonds => Suit.Clubs,
+            Suit.Hearts => Suit.Diamonds,
+            Suit.Spades => Suit.Hearts,
+            _ => throw new ArgumentOutOfRangeException(nameof(suit), suit, null)
+        };
+    }
+    
+    public static IEnumerable<Suit> OneCycle(this Suit suit)
+    {
+        var i = 4;
+        while (i-- > 0)
+        {
+            yield return suit;
+            suit = suit.Next();
+        }
     }
 }
