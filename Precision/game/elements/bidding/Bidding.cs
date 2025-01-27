@@ -1,4 +1,4 @@
-﻿namespace Precision.models;
+﻿namespace Precision.game.elements.bidding;
 
 public class Bidding
 {
@@ -9,12 +9,12 @@ public class Bidding
         var last3 = Bids.Slice(Bids.Count - 3, 3);
         if (last3.TrueForAll(b => b.Type == BidType.Pass))
             return false;
-        
+
         switch (bid.Type)
         {
             case BidType.Bid:
                 var last = Bids.Last();
-                return bid.Level > last.Level || bid.Level == last.Level && bid.Suit > last.Suit;
+                return bid.Level > last.Level || (bid.Level == last.Level && bid.Suit > last.Suit);
             case BidType.Pass:
                 return true;
             case BidType.Double:

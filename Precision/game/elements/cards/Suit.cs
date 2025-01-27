@@ -1,20 +1,15 @@
-﻿using System.Diagnostics.CodeAnalysis;
-using System.Text.Json.Serialization;
+﻿using System.Text.Json.Serialization;
 
-namespace Precision.models;
+namespace Precision.game.elements.cards;
 
 [JsonConverter(typeof(JsonStringEnumConverter))]
 public enum Suit
 {
     Pass,
-    [JsonStringEnumMemberName("Clubs")]
-    Clubs,
-    [JsonStringEnumMemberName("Diamonds")]
-    Diamonds,
-    [JsonStringEnumMemberName("Hearts")]
-    Hearts,
-    [JsonStringEnumMemberName("Spades")]
-    Spades,
+    [JsonStringEnumMemberName("Clubs")] Clubs,
+    [JsonStringEnumMemberName("Diamonds")] Diamonds,
+    [JsonStringEnumMemberName("Hearts")] Hearts,
+    [JsonStringEnumMemberName("Spades")] Spades,
     NT
 }
 
@@ -31,6 +26,7 @@ public static class SuitExtensions
             if (suit == other)
                 return false;
         }
+
         throw new ArgumentException($"Invalid comparison: {@this} > {other}");
     }
 

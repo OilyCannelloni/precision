@@ -1,4 +1,4 @@
-﻿namespace Precision.models;
+﻿namespace Precision.models.socket;
 
 public class WebSocketEvent
 {

@@ -2,8 +2,10 @@
 using System.Text.Json;
 using Precision.deals;
 using Precision.game;
-using Precision.models;
+using Precision.game.elements.cards;
+using Precision.game.elements.deal;
 using Precision.models.dto;
+using Precision.models.socket;
 
 namespace Precision.websocket;
 
@@ -21,19 +23,17 @@ public class WebSocketService(DealService dealService, GameService gameService)
 
     private WebSocketEvent HandleCardClicked(WebSocketEvent @event)
     {
-        CardClickedDto ccDto = JsonSerializer.Deserialize<CardClickedDto>(@event.Data) 
-                               ?? throw new SerializationException("Invalid payload for CardClicked event");
-        
+        var ccDto = JsonSerializer.Deserialize<CardClickedDto>(@event.Data)
+                    ?? throw new SerializationException("Invalid payload for CardClicked event");
+
         var game = gameService.GetGame(ccDto.GameId);
         var dealUpdate = game.PlayCard(new Card(ccDto.Card));
         if (dealUpdate == null)
-        {
             return new WebSocketEvent
             {
                 Type = WebSocketEventType.Error,
                 Data = $"Card {ccDto.Card} cannot be played."
             };
-        }
 
         return new WebSocketEvent
         {
@@ -48,8 +48,8 @@ public class WebSocketService(DealService dealService, GameService gameService)
         var dealBox = new DealBox(2, deal);
         var gameId = gameService.CreateGame(dealBox);
         var str = JsonSerializer.Serialize(new NewGameDto
-            { GameId = gameId, DealBox = dealBox, CurrentTrick = new Trick(dealBox.Dealer)});
-        
+            { GameId = gameId, DealBox = dealBox, CurrentTrick = new Trick(dealBox.Dealer) });
+
         return new WebSocketEvent
         {
             Type = WebSocketEventType.NewGameCreated,

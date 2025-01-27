@@ -2,18 +2,21 @@
 using System.Text.Json.Serialization;
 using Precision.algorithm.json;
 
-namespace Precision.models;
+namespace Precision.game.elements.cards;
 
 [JsonConverter(typeof(HoldingSerializer))]
 public class Holding
 {
-    public int Value { get; private set; }
-    public bool IsEmpty() => Value == 0;
-    
-    
     public Holding(string cards)
     {
         Value = Encode(cards);
+    }
+
+    public int Value { get; private set; }
+
+    public bool IsEmpty()
+    {
+        return Value == 0;
     }
 
     public static int Encode(string cards)
@@ -58,10 +61,8 @@ public class Holding
         var i = Card.Values.Length - 1;
         var ss = new StringBuilder();
         for (var p = 16384; p >= 4; p /= 2, i--)
-        {
             if ((Value & p) != 0)
                 ss.Append(Card.Values[i]);
-        }
 
         return ss.ToString();
     }

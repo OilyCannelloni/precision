@@ -1,4 +1,4 @@
-﻿using Precision.models;
+﻿using Precision.game.elements.deal;
 
 namespace Precision.game;
 

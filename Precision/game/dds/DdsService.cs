@@ -1,7 +1,6 @@
-﻿namespace Precision.game;
+﻿using System.Runtime.InteropServices;
 
-
-using System.Runtime.InteropServices;
+namespace Precision.game.dds;
 
 public struct DdsDeal
 {
@@ -12,12 +11,11 @@ public struct DdsDeal
     public int[] RemaingCards;
 }
 
-
 public class DdsService
 {
     [DllImport("lib/dds.dll", CallingConvention = CallingConvention.StdCall)]
     public static extern int CalcDDtablePBN(char[] tableDealPBN, IntPtr tablep);
 
     [DllImport("lib/dds.dll", CallingConvention = CallingConvention.Cdecl)]
-    public static extern unsafe int ErrorMessage(int code, IntPtr message);
+    public static extern int ErrorMessage(int code, IntPtr message);
 }

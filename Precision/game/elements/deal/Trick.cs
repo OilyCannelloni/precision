@@ -1,13 +1,17 @@
-﻿using Precision.models.common;
+﻿using Precision.game.elements.cards;
+using Precision.models.common;
 
-namespace Precision.models;
+namespace Precision.game.elements.deal;
 
 public class Trick(Position dealer) : PositionIndexable<Card?>
 {
-    public  Position Dealer { get; set; } = dealer;
     private Position _current = dealer;
-    
-    public Card? LeadCard() => this[Dealer];
+    public Position Dealer { get; set; } = dealer;
+
+    public Card? LeadCard()
+    {
+        return this[Dealer];
+    }
 
     public void AddCard(Card card)
     {
@@ -29,17 +33,18 @@ public class Trick(Position dealer) : PositionIndexable<Card?>
         var bestCardValue = 0;
         foreach (var pos in Dealer.OneCycle())
         {
-            var card = this[pos] ?? throw new NullReferenceException("Cannot resolve an incomplete trick");;
+            var card = this[pos] ?? throw new NullReferenceException("Cannot resolve an incomplete trick");
+            ;
             if (card.Suit == leadSuit)
             {
                 if (card.IntValue > bestCardValue)
                 {
                     bestCardValue = card.IntValue;
                     bestCardPosition = pos;
-                    
-                }  
+                }
+
                 continue;
-            } 
+            }
 
             if (card.Suit == trumpSuit)
             {

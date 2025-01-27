@@ -1,8 +1,13 @@
-﻿namespace Precision.models;
+﻿using Precision.game.elements.cards;
+
+namespace Precision.game.elements.deal;
 
 public enum ContractType
 {
-    Default, Doubled, Redoubled, Pass
+    Default,
+    Doubled,
+    Redoubled,
+    Pass
 }
 
 public class Contract

@@ -1,4 +1,4 @@
-﻿namespace Precision.models;
+﻿namespace Precision.game.elements.deal;
 
 public class DealBox(int number, Deal deal)
 {

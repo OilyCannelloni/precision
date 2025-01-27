@@ -1,4 +1,7 @@
-﻿namespace Precision.models.dto;
+﻿using Precision.game.elements.cards;
+using Precision.game.elements.deal;
+
+namespace Precision.models.dto;
 
 public class PlayCardApprovedDto
 {

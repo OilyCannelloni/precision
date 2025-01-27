@@ -1,6 +1,7 @@
-﻿using Precision.models.common;
+﻿using Precision.game.elements.cards;
+using Precision.models.common;
 
-namespace Precision.models;
+namespace Precision.game.elements.deal;
 
 public class Deal : PositionIndexable<Hand>
 {

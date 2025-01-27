@@ -1,20 +1,15 @@
 ﻿using System.Text.Json.Serialization;
 
-namespace Precision.models;
+namespace Precision.game.elements.deal;
 
 [JsonConverter(typeof(JsonStringEnumConverter))]
 public enum Position
 {
-    [JsonStringEnumMemberName("West")]
-    West,
-    [JsonStringEnumMemberName("North")]
-    North,
-    [JsonStringEnumMemberName("East")]
-    East,
-    [JsonStringEnumMemberName("South")]
-    South
+    [JsonStringEnumMemberName("West")] West,
+    [JsonStringEnumMemberName("North")] North,
+    [JsonStringEnumMemberName("East")] East,
+    [JsonStringEnumMemberName("South")] South
 }
-
 
 public static class PositionExtensions
 {
@@ -29,7 +24,7 @@ public static class PositionExtensions
             _ => throw new ArgumentOutOfRangeException(nameof(pos), pos, null)
         };
     }
-    
+
     public static Position Opposite(this Position pos)
     {
         return pos switch
@@ -41,7 +36,7 @@ public static class PositionExtensions
             _ => throw new ArgumentOutOfRangeException(nameof(pos), pos, null)
         };
     }
-    
+
     public static Position Previous(this Position pos)
     {
         return pos switch
@@ -53,7 +48,7 @@ public static class PositionExtensions
             _ => throw new ArgumentOutOfRangeException(nameof(pos), pos, null)
         };
     }
-    
+
     public static IEnumerable<Position> All(this Position pos)
     {
         for (var _ = 0; _ < 4; _++)

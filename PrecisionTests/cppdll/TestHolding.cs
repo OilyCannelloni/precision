@@ -1,4 +1,5 @@
 ﻿using NUnit.Framework;
+using Precision.game.elements.cards;
 using Precision.models;
 
 namespace PrecisionTests.cppdll;

@@ -1,6 +1,6 @@
 ﻿using Swan;
 
-namespace Precision.models;
+namespace Precision.game.elements.cards;
 
 public enum CardValue
 {
@@ -23,12 +23,15 @@ public static class CardValueUtil
 {
     public static int GetChar(int cardValue)
     {
-        int bits = 0;
-        while (cardValue >= 16) {
+        var bits = 0;
+        while (cardValue >= 16)
+        {
             bits += 4;
             cardValue >>= 4;
         }
-        while (cardValue > 0) {
+
+        while (cardValue > 0)
+        {
             bits++;
             cardValue >>= 1;
         }

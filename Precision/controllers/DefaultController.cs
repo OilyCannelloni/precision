@@ -3,14 +3,14 @@ using EmbedIO.Routing;
 using EmbedIO.WebApi;
 using Precision.algorithm;
 using Precision.deals;
-using Precision.models;
+using Precision.game.elements.deal;
 
 namespace Precision.controllers;
 
 public class DefaultController : WebApiController
 {
-    private readonly DealService _dealService = new (new DealGenerator());
-    
+    private readonly DealService _dealService = new(new DealGenerator());
+
     [Route(HttpVerbs.Get, "/")]
     public string GetRoot()
     {

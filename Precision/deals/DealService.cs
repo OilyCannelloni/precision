@@ -1,5 +1,5 @@
 ﻿using Precision.algorithm;
-using Precision.models;
+using Precision.game.elements.deal;
 
 namespace Precision.deals;
 

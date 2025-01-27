@@ -20,6 +20,7 @@ public static class Util
                 bestVal = el;
                 bestI = i;
             }
+
             i++;
         }
 

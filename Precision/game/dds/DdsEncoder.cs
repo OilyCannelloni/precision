@@ -1,6 +1,7 @@
-﻿using Precision.models;
+﻿using Precision.game.elements.cards;
+using Precision.game.elements.deal;
 
-namespace Precision.game;
+namespace Precision.game.dds;
 
 public static class DdsEncoder
 {

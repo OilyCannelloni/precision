@@ -1,4 +1,6 @@
-﻿namespace Precision.models.common;
+﻿using Precision.game.elements.deal;
+
+namespace Precision.models.common;
 
 public abstract class PositionIndexable<T>
 {
@@ -17,8 +19,9 @@ public abstract class PositionIndexable<T>
             Position.South => South,
             _ => throw new ArgumentOutOfRangeException(nameof(pos), pos, null)
         };
-        
-        set {
+
+        set
+        {
             switch (pos)
             {
                 case Position.West:

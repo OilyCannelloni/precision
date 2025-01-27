@@ -1,6 +1,6 @@
 ﻿using System.Text.Json;
 using System.Text.Json.Serialization;
-using Precision.models;
+using Precision.game.elements.cards;
 
 namespace Precision.algorithm.json;
 

@@ -1,4 +1,6 @@
-﻿namespace Precision.models.common;
+﻿using Precision.game.elements.cards;
+
+namespace Precision.models.common;
 
 public abstract class SuitIndexable<T>
 {
@@ -6,7 +8,7 @@ public abstract class SuitIndexable<T>
     public T Hearts { get; set; } = default!;
     public T Diamonds { get; set; } = default!;
     public T Clubs { get; set; } = default!;
-    
+
     public T this[Suit suit]
     {
         get => suit switch
@@ -18,8 +20,9 @@ public abstract class SuitIndexable<T>
             Suit.Spades => Spades,
             _ => throw new ArgumentOutOfRangeException(nameof(suit), suit, null)
         };
-        
-        set {
+
+        set
+        {
             switch (suit)
             {
                 case Suit.Pass or Suit.NT:

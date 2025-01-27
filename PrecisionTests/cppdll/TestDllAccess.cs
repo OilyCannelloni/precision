@@ -1,6 +1,7 @@
 ﻿using System.Runtime.InteropServices;
 using NUnit.Framework;
 using Precision.game;
+using Precision.game.dds;
 
 namespace PrecisionTests.cppdll;
 
