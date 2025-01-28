@@ -62,6 +62,21 @@ public class BotPlayer(Game game, Position position, BotPlayerStrategy strategy)
         Console.WriteLine($"Bot {Position}: Picking card...");
         var pickedCard = PickCardByDefaultStrategy(Game.CurrentDealState[Position], Game.CurrentTrick);
         Console.WriteLine($"Bot {Position}: Picked {pickedCard}");
-        Game.PlayCard(pickedCard);
+
+        if (game.CurrentTrick.IsEmpty())
+            PlayCardDelayAsync(pickedCard);
+        else
+            Game.PlayCard(pickedCard);
+    }
+
+    private async Task PlayCardDelayAsync(Card card)
+    {
+        var task = Task.Run(async () =>
+        {
+            await Task.Delay(1000);
+            return card;
+        });
+        await task.WaitAsync(TimeSpan.FromMilliseconds(2000));
+        Game.PlayCard(task.Result);
     }
 }
