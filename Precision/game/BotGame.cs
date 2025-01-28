@@ -10,27 +10,23 @@ namespace Precision.game;
 
 public class BotGame : Game
 {
-    private List<IEventObserver<DealUpdateDto>> _stateChangeObservers = new();
+    private Table _table = new();
 
-    public BotGame(DealBox box, IWebSocketContext webSocketContext) : base(box)
+    public BotGame(string id, DealBox box) : base(id, box)
     {
-        _stateChangeObservers.Add(new BotPlayer(this, Position.West, new BotPlayerStrategy()));
-        _stateChangeObservers.Add(new DummyPlayer(this, Position.North));
-        _stateChangeObservers.Add(new BotPlayer(this, Position.East, new BotPlayerStrategy()));
-        _stateChangeObservers.Add(new HumanPlayer(this, Position.South, webSocketContext));
+        _table.AddPlayer(new HumanPlayer(this, Position.South));
+        _table.AddPlayer(new BotPlayer(this, Position.West, new BotPlayerStrategy()));
+        _table.AddPlayer(new DummyPlayer(this, Position.North));
+        _table.AddPlayer(new BotPlayer(this, Position.East, new BotPlayerStrategy()));
     }
 
-    public new DealUpdateDto? PlayCard(Card card)
+    public override DealUpdateDto? PlayCard(Card card)
     {
         var dealUpdate = base.PlayCard(card);
         if (dealUpdate == null)
             return null;
         
-        foreach (var observer in _stateChangeObservers)
-        {
-            observer.OnNext(dealUpdate);
-        }
-
+        _table.DispatchDealUpdate(dealUpdate);
         return dealUpdate;
     }
 }

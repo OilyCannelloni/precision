@@ -1,15 +1,15 @@
-﻿using EmbedIO.WebSockets;
-using Precision.game.elements.deal;
+﻿using Precision.game.elements.deal;
 using Precision.models.dto;
 
 namespace Precision.game.players;
 
-public class HumanPlayer(Game game, Position position, IWebSocketContext webSocketContext) : Player(game, position)
+public class HumanPlayer(Game game, Position position) : Player(game, position)
 {
-    private IWebSocketContext _webSocketContext = webSocketContext;
+    public static event EventHandler<DealUpdateDto> DealUpdateReady;
     
-    public override void OnNext(DealUpdateDto @new)
+    public override void OnDealUpdate(DealUpdateDto dealUpdateDto)
     {
-        // _webSocketContext.WebSocket.SendAsync()
+        Console.WriteLine($"Human {Position}: Dispatching DealUpdate {dealUpdateDto.PlayedCard}");
+        DealUpdateReady.Invoke(this, dealUpdateDto);
     }
 }

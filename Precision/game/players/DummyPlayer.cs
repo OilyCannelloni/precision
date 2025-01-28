@@ -6,7 +6,7 @@ namespace Precision.game;
 
 public class DummyPlayer(Game game, Position position) : Player(game, position)
 {
-    public override void OnNext(DealUpdateDto @new)
+    public override void OnDealUpdate(DealUpdateDto @new)
     {
         
     }

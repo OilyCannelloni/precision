@@ -20,10 +20,12 @@ public class WebSocketController : WebSocketModule
         IWebSocketReceiveResult result)
     {
         var text = Encoding.GetString(buffer);
-        Console.WriteLine($"RX: {text}");
+        // Console.WriteLine($"RX: {text}");
         var evt = Json.Deserialize<WebSocketEvent>(text);
-        var serverEvt = _webSocketService.HandleEvent(evt);
-        await SendEvent(context, serverEvt);
+        var serverEvt = _webSocketService.HandleEvent(context, evt);
+        
+        if (serverEvt != null)
+            await SendEvent(context, serverEvt);
     }
 
     protected override async Task OnClientConnectedAsync(IWebSocketContext context)
@@ -42,14 +44,10 @@ public class WebSocketController : WebSocketModule
         return Task.CompletedTask;
     }
 
-    private async Task SendEvent(IWebSocketContext ctx, WebSocketEvent evt)
+    public async Task SendEvent(IWebSocketContext ctx, WebSocketEvent evt)
     {
         var str = Json.Serialize(evt);
-        Console.WriteLine($"TX: {str}");
+        Console.WriteLine($"TX: {evt.Data}");
         await SendAsync(ctx, str);
-    }
-
-    public async Task SendEvent(WebSocketEvent evt)
-    {
     }
 }

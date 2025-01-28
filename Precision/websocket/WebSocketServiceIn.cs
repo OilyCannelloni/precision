@@ -1,5 +1,6 @@
 ﻿using System.Runtime.Serialization;
 using System.Text.Json;
+using EmbedIO.WebSockets;
 using Precision.controllers;
 using Precision.deals;
 using Precision.game;
@@ -10,23 +11,30 @@ using Precision.models.socket;
 
 namespace Precision.websocket;
 
-public partial class WebSocketService(WebSocketController controller)
+public partial class WebSocketService
 {
     private readonly DealService _dealService = new();
     private readonly GameService _gameService = new();
-    private readonly WebSocketController _controller = controller;
+    private readonly WebSocketController _controller;
 
-    public WebSocketEvent HandleEvent(WebSocketEvent @event)
+    public WebSocketService(WebSocketController controller)
+    {
+        _controller = controller;
+        CreateEventHandlers();
+    }
+
+
+    public WebSocketEvent? HandleEvent(IWebSocketContext ctx, WebSocketEvent @event)
     {
         return @event.Type switch
         {
-            WebSocketEventType.CardClicked => HandleCardClicked(@event),
-            WebSocketEventType.NewGameRequest => HandleNewGameRequest(@event),
+            WebSocketEventType.CardClicked => HandleCardClicked(ctx, @event),
+            WebSocketEventType.NewGameRequest => HandleNewGameRequest(ctx, @event),
             _ => throw new ArgumentOutOfRangeException($"Invalid event type: {@event.Type}")
         };
     }
 
-    private WebSocketEvent HandleCardClicked(WebSocketEvent @event)
+    private WebSocketEvent? HandleCardClicked(IWebSocketContext ctx, WebSocketEvent @event)
     {
         var ccDto = JsonSerializer.Deserialize<CardClickedDto>(@event.Data)
                     ?? throw new SerializationException("Invalid payload for CardClicked event");
@@ -39,18 +47,15 @@ public partial class WebSocketService(WebSocketController controller)
                 Data = $"Card {ccDto.Card} cannot be played."
             };
 
-        return new WebSocketEvent
-        {
-            Type = WebSocketEventType.PlayCardApproved,
-            Data = JsonSerializer.Serialize(dealUpdate)
-        };
+        return null;
     }
 
-    private WebSocketEvent HandleNewGameRequest(WebSocketEvent @event)
+    private WebSocketEvent HandleNewGameRequest(IWebSocketContext ctx, WebSocketEvent @event)
     {
         var deal = _dealService.GetRandomDeal();
-        var dealBox = new DealBox(2, deal);
-        var gameId = _gameService.CreateGame(dealBox);
+        var dealBox = new DealBox(3, deal);
+        // var gameId = _gameService.CreateGame(ctx, dealBox);
+        var gameId = _gameService.CreateBotGame(ctx, dealBox);
         var str = JsonSerializer.Serialize(new NewGameDto
             { GameId = gameId, DealBox = dealBox, CurrentTrick = new Trick(dealBox.Dealer) });
 

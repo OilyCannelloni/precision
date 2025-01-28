@@ -40,9 +40,9 @@ public static class CardValueUtil
             cardValueInt >>= 1;
         }
 
-        if (!bits.IsBetween(2, 14))
-            throw new ArithmeticException($"Invalid card value: {cardValueInt}");
-        return CharValues[bits - 2];
+        if (!bits.IsBetween(3, 15))
+            throw new ArithmeticException($"Invalid card value: {cardValue}");
+        return CharValues[bits - 3];
     }
 
     public static CardValue ToCardValue(this char @char)

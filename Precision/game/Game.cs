@@ -5,8 +5,9 @@ using Precision.models.dto;
 
 namespace Precision.game;
 
-public class Game(DealBox box)
+public class Game(string id, DealBox box)
 {
+    public string Id { get; set; } = id;
     public Trick CurrentTrick = new(box.Dealer);
     protected int EwTricks = 0;
     protected int NsTricks = 0;
@@ -22,7 +23,7 @@ public class Game(DealBox box)
         Level = 4
     };
 
-    public DealUpdateDto? PlayCard(Card card)
+    public virtual DealUpdateDto? PlayCard(Card card)
     {
         if (!_canPlayCard(card))
             return null;
@@ -41,9 +42,12 @@ public class Game(DealBox box)
         {
             ActionPlayer = ActionPlayer.Next();
         }
+        
+        Console.WriteLine($"PlayCard OK: {card}");
 
         return new DealUpdateDto
         {
+            GameId = Id,
             ChangedPosition = requestPlayer,
             PlayedCard = card,
             CurrentTrick = CurrentTrick,

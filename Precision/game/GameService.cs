@@ -1,28 +1,54 @@
-﻿using Precision.game.elements.cards;
+﻿using EmbedIO.WebSockets;
+using Precision.game.elements.cards;
 using Precision.game.elements.deal;
 using Precision.models.dto;
 
 namespace Precision.game;
 
+
+
+
 public class GameService
 {
-    private readonly Dictionary<string, Game> _games = new();
+    private class GameInfo
+    {
+        public required Game Game { get; set; }
+        public required IWebSocketContext WebSocketContext { get; set; }
+    }
+    
+    
+    private readonly Dictionary<string, GameInfo> _games = new();
 
-    public string CreateGame(DealBox box)
+    public string CreateGame(IWebSocketContext webSocketContext, DealBox box)
     {
         var id = Guid.NewGuid().ToString();
-        _games[id] = new Game(box);
+        _games[id] = new GameInfo
+        {
+            Game = new Game(id, box),
+            WebSocketContext = webSocketContext
+        };
+        return id;
+    }
+    
+    public string CreateBotGame(IWebSocketContext webSocketContext, DealBox box)
+    {
+        var id = Guid.NewGuid().ToString();
+        _games[id] = new GameInfo
+        {
+            Game = new BotGame(id, box),
+            WebSocketContext = webSocketContext
+        };
         return id;
     }
 
     public Game GetGame(string id)
     {
-        return _games[id];
+        return _games[id].Game;
     }
 
-    public void RemoveGame(string id)
+    public IWebSocketContext GetSocketById(string id)
     {
-        _games.Remove(id);
+        return _games[id].WebSocketContext;
     }
 
     public DealUpdateDto? OnCardPlayRequest(string gameId, Card card)

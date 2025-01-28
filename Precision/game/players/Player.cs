@@ -4,9 +4,9 @@ using Precision.models.dto;
 
 namespace Precision.game;
 
-public abstract class Player(Game game, Position position) : IEventObserver<DealUpdateDto>
+public abstract class Player(Game game, Position position)
 {
-    protected Game Game = game;
-    protected Position Position = position;
-    public abstract void OnNext(DealUpdateDto @new);
+    protected readonly Game Game = game;
+    protected readonly Position Position = position;
+    public abstract void OnDealUpdate(DealUpdateDto @new);
 }

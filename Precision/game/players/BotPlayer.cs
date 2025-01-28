@@ -32,9 +32,11 @@ public class BotPlayer(Game game, Position position, BotPlayerStrategy strategy)
             var suit = SuitExtensions.GetRandomSuit();
             return hand.PopLowestFrom(suit);
         }
+        
+        Console.WriteLine(string.Join(" ", hand.Suits()));
+        
         var cards = hand.AsCards().ToArray();
         var pickedCard = cards[Random.Shared.Next(cards.Length)];
-        hand.RemoveCard(pickedCard);
         return pickedCard;
     }
 
@@ -44,19 +46,22 @@ public class BotPlayer(Game game, Position position, BotPlayerStrategy strategy)
         {
             return hand.PopLowestFrom(suit);
         }
+        
+        Console.WriteLine(string.Join(" ", hand[suit]), suit);
 
         var cards = hand[suit].AsCardValues().Select(cv => new Card(suit, cv)).ToArray();
         var pickedCard = cards[Random.Shared.Next(cards.Length)];
-        hand.RemoveCard(pickedCard);
         return pickedCard;
     }
 
-    public override void OnNext(DealUpdateDto @new)
+    public override void OnDealUpdate(DealUpdateDto dealUpdateDto)
     {
-        if (@new != null)
+        if (dealUpdateDto.ActionPlayer != Position)
             return;
-
+        
+        Console.WriteLine($"Bot {Position}: Picking card...");
         var pickedCard = PickCardByDefaultStrategy(Game.CurrentDealState[Position], Game.CurrentTrick);
+        Console.WriteLine($"Bot {Position}: Picked {pickedCard}");
         Game.PlayCard(pickedCard);
     }
 }
