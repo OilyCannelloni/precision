@@ -11,9 +11,6 @@ public class DdsService
     {
         var ddsDeal = game.ToDdsDeal();
         var futureTricks = new DdsFutureTricks();
-        
-        Console.WriteLine(ddsDeal.CurrentTrickRank.Stringify());
-        Console.WriteLine(ddsDeal.CurrentTrickSuit.Stringify());
 
         var error = DdsWrapper.SolveBoard(ref ddsDeal, -1, 2, 0, ref futureTricks, 0);
         if (error < 0)

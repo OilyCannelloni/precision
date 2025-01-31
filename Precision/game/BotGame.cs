@@ -14,10 +14,19 @@ public class BotGame : Game
 
     public BotGame(string id, DealBox box) : base(id, box)
     {
+        var botStrategyW = new BotStrategy(Position.West)
+            .AddFilter(BotStrategyFilterAction.DoubleDummy)
+            .AddFilter(BotStrategyFilterAction.CashWinners)
+            .SetPickAction(BotStrategyPickAction.Lowest);
+
+        var botStrategyE = new BotStrategy(Position.East)
+            .AddFilter(BotStrategyFilterAction.Legal)
+            .SetPickAction(BotStrategyPickAction.Lowest);
+        
         _table.AddPlayer(new HumanPlayer(this, Position.South));
-        _table.AddPlayer(new BotPlayer(this, Position.West, new BotPlayerStrategy()));
+        _table.AddPlayer(new BotPlayer(this, Position.West, botStrategyW));
         _table.AddPlayer(new DummyPlayer(this, Position.North));
-        _table.AddPlayer(new BotPlayer(this, Position.East, new BotPlayerStrategy()));
+        _table.AddPlayer(new BotPlayer(this, Position.East, botStrategyE));
     }
 
     public override DealUpdateDto? PlayCard(Card card)
