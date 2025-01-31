@@ -2,10 +2,10 @@
 
 namespace Precision.game.elements.bidding;
 
-public class Bid
+public class Bid(Suit suit, int level)
 {
-    public string Alert = string.Empty;
-    public BidType Type { get; set; }
-    public int Level { get; set; }
-    public Suit Suit { get; set; }
+    public string Alert { get; set; } = string.Empty;
+    public BidType Type { get; set; } = BidType.Bid;
+    public int Level { get; set; } = level;
+    public Suit Suit { get; set; } = suit;
 }

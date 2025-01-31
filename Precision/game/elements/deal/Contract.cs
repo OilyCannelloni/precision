@@ -10,9 +10,9 @@ public enum ContractType
     Pass
 }
 
-public class Contract
+public class Contract(string s)
 {
-    public int Level { get; set; }
-    public Suit Suit { get; set; }
-    public ContractType Type { get; set; }
+    public int Level { get; set; } = s[0] - '0';
+    public Suit Suit { get; set; } = s[1].ToSuit();
+    public ContractType Type { get; set; } = ContractType.Default;
 }

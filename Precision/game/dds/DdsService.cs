@@ -1,21 +1,38 @@
-﻿using System.Runtime.InteropServices;
+﻿using Precision.game.elements.cards;
+using Precision.game.elements.deal;
+using Swan;
 
 namespace Precision.game.dds;
 
-public struct DdsDeal
-{
-    public int Trump;
-    public int First;
-    public int[] CurrentTrickSuit;
-    public int[] CurrentTrickRank;
-    public int[] RemaingCards;
-}
-
 public class DdsService
 {
-    [DllImport("lib/dds.dll", CallingConvention = CallingConvention.StdCall)]
-    public static extern int CalcDDtablePBN(char[] tableDealPBN, IntPtr tablep);
+    public IEnumerable<Card> SolveCurrentGameState(Game game)
+    {
+        var ddsDeal = game.ToDdsDeal();
+        var futureTricks = new DdsFutureTricks();
+        
+        Console.WriteLine(ddsDeal.Stringify());
 
-    [DllImport("lib/dds.dll", CallingConvention = CallingConvention.Cdecl)]
-    public static extern int ErrorMessage(int code, IntPtr message);
+        try
+        {
+            var error = DdsWrapper.SolveBoard(ref ddsDeal, -1, 2, 0, ref futureTricks, 0);
+            if (error < 0)
+            {
+                Console.WriteLine(error);
+            }
+        }
+        catch
+        {
+            
+        }
+        
+        
+
+        
+        
+        foreach (var card in futureTricks.ToCards())
+        {
+            yield return card;
+        }
+    }
 }

@@ -2,6 +2,7 @@
 using Precision.game.elements.cards;
 using Precision.game.elements.deal;
 using Precision.models.dto;
+using Contract = Precision.game.elements.deal.Contract;
 
 namespace Precision.game;
 
@@ -14,14 +15,11 @@ public class Game(string id, DealBox box)
     protected DealBox DealBox { get; set; } = box;
     public Deal CurrentDealState { get; set; } = box.Deal;
     protected Bidding Bidding { get; set; } = new();
-    protected virtual Position ActionPlayer { get; set; } = box.Dealer;
+    public Position ActionPlayer { get; set; } = box.Dealer;
 
-    protected Bid? Contract { get; set; } = new()
-    {
-        Type = BidType.Bid,
-        Suit = Suit.Spades,
-        Level = 4
-    };
+    public Contract? Contract { get; set; } = new("4s");
+
+    public Hand DealerHand() => CurrentDealState[ActionPlayer];
 
     public virtual DealUpdateDto? PlayCard(Card card)
     {

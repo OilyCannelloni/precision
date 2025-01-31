@@ -12,6 +12,11 @@ public class Holding
         Value = Encode(cards);
     }
 
+    public Holding(CardValue value)
+    {
+        Value = value;
+    }
+
     public CardValue Value { get; private set; }
 
     public bool IsEmpty()

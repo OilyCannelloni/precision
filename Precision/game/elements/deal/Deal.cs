@@ -7,7 +7,7 @@ public class Deal : PositionIndexable<Hand>
 {
     public override string ToString()
     {
-        return string.Join("  ", Position.West.All().Select(p => this[p]));
+        return string.Join("  ", Position.West.OneCycle().Select(p => this[p]));
     }
 
     public void RemoveCard(Position pos, Card card)

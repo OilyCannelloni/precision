@@ -69,4 +69,11 @@ public class Hand : SuitIndexable<Holding>
         var cv = this[suit].PopLowest();
         return new Card(suit, cv);
     }
+
+    public Card GetRandomCard()
+    {
+        var suit = SuitExtensions.GetRandomSuit();
+        var cards = this[suit].AsCardValues().Select(cv => new Card(suit, cv)).ToArray();
+        return cards[Random.Shared.Next(cards.Length)];
+    }
 }
