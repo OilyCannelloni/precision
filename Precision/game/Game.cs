@@ -27,24 +27,29 @@ public class Game(string id, DealBox box)
     {
         if (!_canPlayCard(card))
             return null;
+        Console.WriteLine($"PlayCard OK: {card}");
 
         var requestPlayer = ActionPlayer;
         CurrentDealState.RemoveCard(requestPlayer, card);
-
+        
         CurrentTrick.AddCard(card);
         if (CurrentTrick.IsComplete())
         {
             ActionPlayer = CurrentTrick.ResolveWinner(
                 Contract?.Suit ?? throw new NullReferenceException("Cannot resolve a trick without a contract"));
+            var oldTrick = CurrentTrick;
             CurrentTrick = new Trick(ActionPlayer);
+            return new DealUpdateDto
+            {
+                GameId = Id,
+                ChangedPosition = requestPlayer,
+                PlayedCard = card,
+                CurrentTrick = oldTrick,
+                ActionPlayer = ActionPlayer
+            };
         }
-        else
-        {
-            ActionPlayer = ActionPlayer.Next();
-        }
-        
-        Console.WriteLine($"PlayCard OK: {card}");
 
+        ActionPlayer = ActionPlayer.Next();
         return new DealUpdateDto
         {
             GameId = Id,

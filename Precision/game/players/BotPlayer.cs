@@ -33,7 +33,7 @@ public class BotPlayer(Game game, Position position, BotPlayerStrategy strategy)
             return hand.PopLowestFrom(suit);
         }
         
-        Console.WriteLine(string.Join(" ", hand.Suits()));
+        Console.WriteLine(string.Join(" ", hand.Holdings()));
         
         var cards = hand.AsCards().ToArray();
         var pickedCard = cards[Random.Shared.Next(cards.Length)];
@@ -57,6 +57,9 @@ public class BotPlayer(Game game, Position position, BotPlayerStrategy strategy)
     public override void OnDealUpdate(DealUpdateDto dealUpdateDto)
     {
         if (dealUpdateDto.ActionPlayer != Position)
+            return;
+        
+        if (Game.CurrentDealState[Position].IsEmpty())
             return;
         
         Console.WriteLine($"Bot {Position}: Picking card...");

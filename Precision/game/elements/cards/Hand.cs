@@ -5,7 +5,7 @@ namespace Precision.game.elements.cards;
 
 public class Hand : SuitIndexable<Holding>
 {
-    public IEnumerable<Holding> Suits()
+    public IEnumerable<Holding> Holdings()
     {
         yield return Spades;
         yield return Hearts;
@@ -15,9 +15,10 @@ public class Hand : SuitIndexable<Holding>
 
     public override string ToString()
     {
-        return string.Join(".", Suits());
+        return string.Join(".", Holdings());
     }
 
+    public bool IsEmpty() => Holdings().All(h => h.IsEmpty());
 
     public static Hand FromCards(ArraySegment<int> cards)
     {
