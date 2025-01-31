@@ -1,4 +1,5 @@
-﻿using Precision.game.elements.cards;
+﻿using Precision.game.dds;
+using Precision.game.elements.cards;
 using Precision.game.elements.deal;
 using Precision.models.common;
 using Precision.models.dto;
@@ -9,11 +10,14 @@ public class BotPlayerStrategy
 {
     public bool DefaultPlayLow { get; set; } = false; // false = play random card
     public bool DefaultTakeTrickIfCan { get; set; } = true;
+    public bool DefaultPlayDoubleDummy { get; set; } = true;
 }
 
 
 public class BotPlayer(Game game, Position position, BotPlayerStrategy strategy) : Player(game, position)
 {
+    private DdsService _ddsService = new();
+    
     private Card PickCardByDefaultStrategy(Hand hand, Trick currentTrick)
     {
         if (currentTrick.IsEmpty())
@@ -54,6 +58,14 @@ public class BotPlayer(Game game, Position position, BotPlayerStrategy strategy)
         return pickedCard;
     }
 
+    private Card PickCardDdRandom()
+    {
+        var cards = _ddsService.SolveCurrentGameState(Game).ToArray();
+        Console.WriteLine($"Bot {Position}: {string.Join(", ", cards.AsReadOnly())}");
+        var pickedCard = cards[Random.Shared.Next(cards.Length)];
+        return pickedCard;
+    }
+    
     public override void OnDealUpdate(DealUpdateDto dealUpdateDto)
     {
         if (dealUpdateDto.ActionPlayer != Position)
@@ -63,7 +75,8 @@ public class BotPlayer(Game game, Position position, BotPlayerStrategy strategy)
             return;
         
         Console.WriteLine($"Bot {Position}: Picking card...");
-        var pickedCard = PickCardByDefaultStrategy(Game.CurrentDealState[Position], Game.CurrentTrick);
+        // var pickedCard = PickCardByDefaultStrategy(Game.CurrentDealState[Position], Game.CurrentTrick);
+        var pickedCard = PickCardDdRandom();
         Console.WriteLine($"Bot {Position}: Picked {pickedCard}");
 
         if (game.CurrentTrick.IsEmpty())

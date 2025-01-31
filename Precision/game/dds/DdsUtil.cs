@@ -91,7 +91,7 @@ public static class DdsUtil
             if (trick[pos] == null)
                 return (ranks, suits);
             suits[i] = (int) trick[pos]!.Suit.ToDdsSuit();
-            ranks[i] = "xx23456789TJQKA".IndexOf(trick[pos]!.Value);
+            ranks[i++] = "xx23456789TJQKA".IndexOf(trick[pos]!.Value);
         }
         return (ranks, suits);
     }
